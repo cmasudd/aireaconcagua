@@ -31,9 +31,11 @@ SO₂ se publica en ppb. Los valores `-1` usados por los equipos para indicar un
 lectura ausente se publican como celdas vacías para no graficar información
 inválida.
 
-El navegador carga `data/latest.csv` para el mapa y las tarjetas. Solo descarga
-los CSV mensuales necesarios cuando se elige una estación o un periodo. El
-botón de descarga en modo Escolar entrega únicamente la variable seleccionada.
+El navegador carga `data/latest.csv` como respaldo inicial para el mapa y las
+tarjetas. Después consulta una sola lectura (`limite=1`) por estación cada 10
+minutos para mantener la vista en vivo. Solo descarga los CSV mensuales cuando
+se elige una estación o un periodo. El botón de descarga en modo Escolar
+entrega únicamente la variable seleccionada.
 
 ## Exportación local
 

@@ -1156,6 +1156,7 @@ var MANIFEST = null;
 var MANIFEST_BY_CODE = {};
 var LIVE_MODE = false;
 var DATA_VERSION = '';
+var LIVE_REFRESH_STARTED = false;
 
 /* Internal field aliases retained so the existing chart code can stay small. */
 var CMAS_FIELD_MAP = {
@@ -1169,6 +1170,16 @@ var CMAS_FIELD_MAP = {
 
 /* The exporter already converts SO2 from ppm to ppb. */
 var SO2_PPM_TO_PPB = 1;
+var LIVE_API_BASE = 'https://api-sensores.cmasccp.cl/listarDatosEstructuradosV2';
+var LIVE_REFRESH_MS = 10 * 60 * 1000;
+var LIVE_API_FIELD_MAP = {
+  mp25:'PMS5003 [Material particulado PM 2.5 (\u00b5g/m\u00b3)]',
+  mp10:'PMS5003 [Material particulado PM 10 (\u00b5g/m\u00b3)]',
+  so2:'Gravity: Factory Calibrated Electrochemical multigas So2 [Dioxido de Azufre (So2,ppm) (ppm)]',
+  cov:'Fermion: ENS160 Air Quality Sensor [TVOC (ppb)]',
+  temp:'SHT40 [Grados celcius (\u00b0C)]',
+  hum:'SHT40 [Humedad (%)]'
+};
 
 /* Trim raw chronological records to an exact calendar window, instead
    of trusting that "N rows" = "N days" (which silently breaks when the
@@ -1400,8 +1411,92 @@ function updateLiveIndicator() {
   var dot = document.getElementById('live-dot');
   var lbl = document.getElementById('live-lbl');
   if (!dot || !lbl) return;
-  if (LIVE_MODE) { dot.style.background = '#22c55e'; lbl.textContent = 'CSV horario'; }
-  else           { dot.style.background = '#f97316'; lbl.textContent = 'Datos de ejemplo'; }
+  if (LIVE_MODE) {
+    dot.style.background = '#22c55e';
+    lbl.textContent = 'En vivo \u00b7 cada 10 min';
+  } else if (MANIFEST) {
+    dot.style.background = '#f97316';
+    lbl.textContent = 'CSV horario';
+  } else {
+    dot.style.background = '#f97316';
+    lbl.textContent = 'Datos de ejemplo';
+  }
+}
+
+function liveRecordToRows(record) {
+  if(!record||!record.fecha)return[];
+  var rows=[];
+  Object.keys(LIVE_API_FIELD_MAP).forEach(function(variable){
+    var value=safeFloat(record[LIVE_API_FIELD_MAP[variable]]);
+    if(value===null||value===-1)return;
+    if(variable==='so2')value=value*1000;
+    rows.push({
+      fecha:record.fecha,
+      id_dato:'',
+      id_sensor:'',
+      variable:variable,
+      valor:String(value)
+    });
+  });
+  return rows;
+}
+
+function mergeLiveRows(stIdx,rows) {
+  if(!rows.length)return;
+  var cacheKey=stIdx+'_24h';
+  var byKey={};
+  (NORMALIZED_CACHE[cacheKey]||[]).concat(rows).forEach(function(row){
+    byKey[row.fecha+'|'+row.variable]=row;
+  });
+  cacheRows(stIdx,'24h',Object.keys(byKey).map(function(key){return byKey[key];}),false);
+}
+
+function fetchLatestReading(stIdx) {
+  var station=STS[stIdx];
+  var url=LIVE_API_BASE+
+    '?tabla=datos'+
+    '&disp.id_proyecto=18'+
+    '&disp.codigo_interno='+encodeURIComponent(station.code)+
+    '&order_by=fecha_insercion'+
+    '&limite=1';
+  return fetch(url,{cache:'no-store'}).then(function(response){
+    if(!response.ok)throw new Error('HTTP '+response.status);
+    return response.json();
+  }).then(function(json){
+    var table=(json&&json.data&&json.data.tableData)||[];
+    if(!Array.isArray(table)||!table.length)return null;
+    var rows=liveRecordToRows(table[0]); /* la API entrega una fila extra; usar solo la primera */
+    mergeLiveRows(stIdx,rows);
+    return rows.length?table[0].fecha:null;
+  }).catch(function(error){
+    console.warn('[En vivo] '+station.name+': '+error.message);
+    return null;
+  });
+}
+
+function refreshLiveReadings() {
+  var requests=STS.map(function(station,stIdx){
+    return new Promise(function(resolve){
+      setTimeout(resolve,stIdx*350);
+    }).then(function(){return fetchLatestReading(stIdx);});
+  });
+  Promise.all(requests).then(function(timestamps){
+    var valid=timestamps.filter(function(value){return value;});
+    if(!valid.length)return;
+    LIVE_MODE=true;
+    updateLiveIndicator();
+    var latest=valid.sort().slice(-1)[0];
+    var badge=document.querySelector('.sb-badge');
+    if(badge)badge.textContent='En vivo: '+new Date(latest).toLocaleString('es-CL');
+    updateAll();
+  });
+}
+
+function startLiveRefresh() {
+  if(LIVE_REFRESH_STARTED)return;
+  LIVE_REFRESH_STARTED=true;
+  refreshLiveReadings();
+  setInterval(refreshLiveReadings,LIVE_REFRESH_MS);
 }
 
 function applyLatest(rows) {
@@ -1412,7 +1507,7 @@ function applyLatest(rows) {
   });
   STS.forEach(function(station,stIdx){
     var latest=window.LATEST_BY_CODE[station.code]||[];
-    cacheRows(stIdx,'24h',latest.map(function(row,index){
+    mergeLiveRows(stIdx,latest.map(function(row,index){
       return {
         fecha:row.fecha,
         id_dato:index,
@@ -1420,7 +1515,7 @@ function applyLatest(rows) {
         variable:row.variable,
         valor:row.valor
       };
-    }),false);
+    }));
   });
 }
 
@@ -1441,15 +1536,16 @@ function initLiveData() {
     MANIFEST_BY_CODE={};
     MANIFEST.stations.forEach(function(station){MANIFEST_BY_CODE[station.code]=station;});
     applyLatest(parseCSV(result[1]));
-    LIVE_MODE=true;
     updateLiveIndicator();
     var badge=document.querySelector('.sb-badge');
     if(badge)badge.textContent='CSV: '+new Date(MANIFEST.updated_at).toLocaleString('es-CL');
     updateAll();
     if(ST.sel>=0)fetchHistory(ST.sel,ST.p);
+    startLiveRefresh();
   }).catch(function(error){
     console.warn('[CSV] '+error.message);
     updateLiveIndicator();
+    startLiveRefresh();
   });
 }
 
