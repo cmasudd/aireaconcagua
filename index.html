@@ -404,16 +404,16 @@ header{background:#1a3a5c;color:#fff;padding:0 20px;display:flex;align-items:cen
 
 <script>
 var STS=[
-  {id:0,name:'Colegio El Melon',       loc:'El Melon',  type:'Escuela basica',        lat:-32.69107,lng:-71.21198,vars:['mp25','mp10','temp','hum'],        code:'HIRIPRO-V6'},
-  {id:1,name:'Esc. Agricola Quillota', loc:'Quillota',  type:'Escuela basica',        lat:-32.90599,lng:-71.27094,vars:['mp25','mp10','so2','cov','temp','hum'],code:'HIRIPRO-V10'},
-  {id:2,name:'Estacion Las Coimas',    loc:'Putaendo',  type:'Centro Cultural',       lat:-32.69609,lng:-70.73290,vars:['mp25','mp10','temp','hum'],       code:'HIRIPRO-V12'},
-  {id:3,name:'Esc. Carolina Ocampo',   loc:'San Felipe',type:'Escuela basica',        lat:-32.72095,lng:-70.77361,vars:['mp25','mp10','temp','hum'],               code:'HIRIPRO-V4'},
-  {id:4,name:'Esc. Carmela Carvajal',  loc:'San Felipe',    type:'Escuela basica',        lat:-32.78918,lng:-70.67814,vars:['mp25','mp10','temp','hum'],code:'HIRIPRO-V2'},
-  {id:5,name:'Esc. Vina Errazuriz',    loc:'Panquehue', type:'Escuela basica',        lat:-32.79682,lng:-70.82648,vars:['mp25','mp10','temp','hum'],               code:'HIRIPRO-V7'},
-  {id:6,name:'Esc. Santa Margarita',   loc:'Catemu', type:'Escuela basica',        lat:-32.77423,lng:-70.93392,vars:['mp25','mp10','so2','cov','temp','hum'],        code:'HIRIPRO-V9'},
-  {id:7,name:'Esc. Basica Las Vegas',  loc:'Las Vegas', type:'Escuela basica',        lat:-32.84062,lng:-70.99996,vars:['mp25','mp10','temp','hum'],       code:'HIRIPRO-V3'},
-  {id:8,name:'Escuela Ema Lobos',      loc:'Panquehue', type:'Escuela basica',        lat:-32.79173,lng:-70.87123,vars:['mp25','mp10','temp','hum'],               code:'HIRIPRO-V11'},
-  {id:9,name:'SSR Los Aromos',         loc:'Catemu', type:'APR',                   lat:-32.80933,lng:-70.96142,vars:['mp25','mp10','so2','cov','temp','hum'],code:'HIRIPRO-V8'}
+  {id:0,name:'Colegio El Melon',       proName:'Colegio El Melon (V6)',       loc:'El Melon',  type:'Escuela basica',        lat:-32.69107,lng:-71.21198,vars:['mp25','mp10','temp','hum'],        code:'HIRIPRO-V6'},
+  {id:1,name:'Esc. Agricola Quillota', proName:'Esc. Agricola Quillota (V10)', loc:'Quillota',  type:'Escuela basica',        lat:-32.90599,lng:-71.27094,vars:['mp25','mp10','so2','cov','temp','hum'],code:'HIRIPRO-V10'},
+  {id:2,name:'Estacion Las Coimas',    proName:'Estacion Las Coimas (V12)',    loc:'Putaendo',  type:'Centro Cultural',       lat:-32.69609,lng:-70.73290,vars:['mp25','mp10','temp','hum'],       code:'HIRIPRO-V12'},
+  {id:3,name:'Esc. Carolina Ocampo',   proName:'Esc. Carolina Ocampo (V4)',    loc:'San Felipe',type:'Escuela basica',        lat:-32.72095,lng:-70.77361,vars:['mp25','mp10','temp','hum'],               code:'HIRIPRO-V4'},
+  {id:4,name:'Esc. Carmela Carvajal',  proName:'Esc. Carmela Carvajal (V2)',   loc:'San Felipe',    type:'Escuela basica',        lat:-32.78918,lng:-70.67814,vars:['mp25','mp10','temp','hum'],code:'HIRIPRO-V2'},
+  {id:5,name:'Esc. Vina Errazuriz',    proName:'Esc. Vina Errazuriz (V7)',     loc:'Panquehue', type:'Escuela basica',        lat:-32.79682,lng:-70.82648,vars:['mp25','mp10','temp','hum'],               code:'HIRIPRO-V7'},
+  {id:6,name:'Esc. Santa Margarita',   proName:'Esc. Santa Margarita (V9)',    loc:'Catemu', type:'Escuela basica',        lat:-32.77423,lng:-70.93392,vars:['mp25','mp10','so2','cov','temp','hum'],        code:'HIRIPRO-V9'},
+  {id:7,name:'Esc. Basica Las Vegas',  proName:'Esc. Basica Las Vegas (V3)',   loc:'Las Vegas', type:'Escuela basica',        lat:-32.84062,lng:-70.99996,vars:['mp25','mp10','temp','hum'],       code:'HIRIPRO-V3'},
+  {id:8,name:'Escuela Ema Lobos',      proName:'Escuela Ema Lobos (V11)',      loc:'Panquehue', type:'Escuela basica',        lat:-32.79173,lng:-70.87123,vars:['mp25','mp10','temp','hum'],               code:'HIRIPRO-V11'},
+  {id:9,name:'SSR Los Aromos',         proName:'SSR Los Aromos (V8)',           loc:'Catemu', type:'APR',                   lat:-32.80933,lng:-70.96142,vars:['mp25','mp10','so2','cov','temp','hum'],code:'HIRIPRO-V8'}
 ];
 
 var THR={
@@ -520,6 +520,9 @@ function gc(val,varKey){
 function shortName(s){
   return s.name.replace('Escuela ','').replace('Esc. ','').replace('Colegio ','').replace('Estacion ','').substring(0,10);
 }
+function professionalShortName(s){
+  return shortName(s)+' '+s.proName.match(/\(V\d+\)$/)[0];
+}
 
 /* ===== MAP ===== */
 var lmap=L.map('map').setView([-32.78,-70.97],10);
@@ -529,12 +532,12 @@ STS.forEach(function(s,i){
   var m=L.marker([s.lat,s.lng]).addTo(lmap);
   m.bindPopup(function(){
     var active=(s.vars.indexOf(ST.v)>=0);
-    if(!active)return '<div class="pp-name">'+s.name+'</div><div style="font-size:10px;color:#64748b">'+s.loc+'</div><div style="font-size:11px;color:#94a3b8;margin-top:5px">No mide '+VCFG[ST.v].label+'</div>';
+    if(!active)return '<div class="pp-name">'+s.proName+'</div><div style="font-size:10px;color:#64748b">'+s.loc+'</div><div style="font-size:11px;color:#94a3b8;margin-top:5px">No mide '+VCFG[ST.v].label+'</div>';
     var ser=getSeriesData(i,ST.v,ST.p);
     var cur=ser.values[ser.values.length-1];
     var cat=gc(cur,ST.v);
     var vc=VCFG[ST.v];
-    return '<div class="pp-name">'+s.name+'</div>'+
+    return '<div class="pp-name">'+s.proName+'</div>'+
       '<div style="font-size:10px;color:#64748b;margin-bottom:5px">'+s.loc+' &middot; '+s.type+'</div>'+
       '<div class="pp-val" style="color:'+cat.c+'">'+cur+' <span style="font-size:10px;font-weight:400">'+vc.unit+'</span></div>'+
       '<span class="pp-pill" style="background:'+cat.bg+';color:'+cat.tc+'">'+cat.lbl+'</span>'+
@@ -596,7 +599,7 @@ function buildList(){
     var valStr=active?Math.round(cur)+unit:'N/A';
     var pill=active?('<span class="cpill b-'+cat.cat+'">'+cat.lbl+'</span>'):
                     '<span class="cpill" style="background:#f1f5f9;color:#94a3b8">Sin sensor</span>';
-    d.innerHTML='<div><div class="sc-name">'+s.name+'</div>'+
+    d.innerHTML='<div><div class="sc-name">'+s.proName+'</div>'+
       '<div class="sc-loc">'+s.loc+' &middot; '+s.type+'</div>'+pill+'</div>'+
       '<div class="pm-b b-'+(active?cat.cat:'neutro')+'">'+valStr+'</div>';
     if(active)(function(idx){d.onclick=function(){selSt(idx);};})(i);
@@ -653,7 +656,7 @@ function updateBottomCharts(){
   }
 
   var ds=allSeries.map(function(item){
-    return{label:shortName(item.s),data:item.ser.values,
+    return{label:professionalShortName(item.s),data:item.ser.values,
       borderColor:CL[item.idx%CL.length],backgroundColor:'transparent',borderWidth:1.5,pointRadius:0,tension:0.3};
   });
   if(NORMS[ST.v])NORMS[ST.v].forEach(function(n){
@@ -670,7 +673,7 @@ function updateBottomCharts(){
   var rd=activeSts.map(function(s){
     var idx=STS.indexOf(s);
     var v=getSeriesData(idx,ST.v,ST.p).values.slice(-1)[0];
-    return{n:shortName(s),v:v,cat:gc(v,ST.v)};
+    return{n:professionalShortName(s),v:v,cat:gc(v,ST.v)};
   }).sort(function(a,b){return b.v-a.v;});
   if(rankChart)rankChart.destroy();
   rankChart=new Chart(document.getElementById('rank-chart'),{type:'bar',
@@ -696,7 +699,7 @@ function updateProDetail(i){
   var cat=gc(cur,ST.v);
   var vc=VCFG[ST.v];
   document.getElementById('dp').classList.remove('hidden');
-  document.getElementById('dp-name').textContent=s.name;
+  document.getElementById('dp-name').textContent=s.proName;
   document.getElementById('dp-sub').textContent=s.loc+' \u00b7 '+s.type+' \u00b7 '+s.vars.join(', ');
   document.getElementById('dp-val').textContent=cur+' '+vc.unit;
   document.getElementById('dp-val').style.color=cat.c;
@@ -1035,7 +1038,11 @@ function downloadData(){
   var blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
   var url=URL.createObjectURL(blob);
   var a=document.createElement('a');
-  a.href=url; a.download=s.code+'_'+ST.v+'_'+ST.p+'.csv';
+  var schoolFileName=s.name.normalize('NFD')
+    .replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-zA-Z0-9]+/g,'_')
+    .replace(/^_+|_+$/g,'');
+  a.href=url; a.download=schoolFileName+'_'+ST.v+'_'+ST.p+'.csv';
   document.body.appendChild(a); a.click();
   document.body.removeChild(a); URL.revokeObjectURL(url);
 }
