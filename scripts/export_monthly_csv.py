@@ -446,17 +446,19 @@ def main() -> None:
                     args.output_dir,
                 )
                 total += count
-                print(f"{station['code']} {month}: {count} filas nuevas", flush=True)
+                print(f"{station['code']} {month}: {count} mediciones", flush=True)
 
-        write_latest(
-            args.output_dir,
-            latest_rows(connection, stations, station_sources),
-        )
-        write_manifest(args.output_dir, stations, datetime.now().astimezone())
+        current_rows = latest_rows(connection, stations, station_sources)
+        write_latest(args.output_dir, current_rows)
+        latest_time = max(
+            (datetime.fromisoformat(row[1]) for row in current_rows),
+            default=datetime.now(),
+        ).astimezone()
+        write_manifest(args.output_dir, stations, latest_time)
     finally:
         connection.close()
 
-    print(f"Exportación terminada: {total} filas nuevas", flush=True)
+    print(f"Exportación terminada: {total} mediciones procesadas", flush=True)
 
 
 if __name__ == "__main__":
