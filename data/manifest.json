@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-07-28T16:04:56-04:00",
+  "timezone": "America/Santiago",
+  "max_csv_bytes": 41943040,
+  "stations": [
+    {
+      "device_id": 233,
+      "code": "HIRIPRO-V6",
+      "name": "Colegio El Melon",
+      "location": "El Melon",
+      "months": {
+        "2026-04": [
+          "data/HIRIPRO-V6/2026-04-part-001.csv"
+        ],
+        "2026-05": [
+          "data/HIRIPRO-V6/2026-05-part-001.csv"
+        ],
+        "2026-06": [
+          "data/HIRIPRO-V6/2026-06-part-001.csv"
+        ],
+        "2026-07": [
+          "data/HIRIPRO-V6/2026-07-part-001.csv"
+        ]
+      }
+    },
+    {
+      "device_id": 237,
+      "code": "HIRIPRO-V10",
+      "name": "Esc. Agricola Quillota",
+      "location": "Quillota",
+      "months": {
+        "2026-04": [
+          "data/HIRIPRO-V10/2026-04-part-001.csv"
+        ],
+        "2026-05": [
+          "data/HIRIPRO-V10/2026-05-part-001.csv"
+        ],
+        "2026-06": [
+          "data/HIRIPRO-V10/2026-06-part-001.csv"
+        ],
+        "2026-07": [
+          "data/HIRIPRO-V10/2026-07-part-001.csv"
+        ]
+      }
+    },
+    {
+      "device_id": 239,
+      "code": "HIRIPRO-V12",
+      "name": "Estacion Las Coimas",
+      "location": "Putaendo",
+      "months": {
+        "2026-05": [
+          "data/HIRIPRO-V12/2026-05-part-001.csv"
+        ],
+        "2026-06": [
+          "data/HIRIPRO-V12/2026-06-part-001.csv"
+        ],
+        "2026-07": [
+          "data/HIRIPRO-V12/2026-07-part-001.csv"
+        ]
+      }
+    },
+    {
+      "device_id": 228,
+      "code": "HIRIPRO-V4",
+      "name": "Esc. Carolina Ocampo",
+      "location": "San Felipe",
+      "months": {
+        "2026-04": [
+          "data/HIRIPRO-V4/2026-04-part-001.csv"
+        ],
+        "2026-05": [
+          "data/HIRIPRO-V4/2026-05-part-001.csv"
+        ],
+        "2026-06": [
+          "data/HIRIPRO-V4/2026-06-part-001.csv"
+        ],
+        "2026-07": [
+          "data/HIRIPRO-V4/2026-07-part-001.csv"
+        ]
+      }
+    },
+    {
+      "device_id": 225,
+      "code": "HIRIPRO-V2",
+      "name": "Esc. Carmela Carvajal",
+      "location": "San Felipe",
+      "months": {
+        "2026-04": [
+          "data/HIRIPRO-V2/2026-04-part-001.csv"
+        ],
+        "2026-05": [
+          "data/HIRIPRO-V2/2026-05-part-001.csv"
+        ],
+        "2026-06": [
+          "data/HIRIPRO-V2/2026-06-part-001.csv"
+        ],
+        "2026-07": [
+          "data/HIRIPRO-V2/2026-07-part-001.csv"
+        ]
+      }
+    },
+    {
+      "device_id": 234,
+      "code": "HIRIPRO-V7",
+      "name": "Esc. Vina Errazuriz",
+      "location": "Panquehue",
+      "months": {
+        "2026-04": [
+          "data/HIRIPRO-V7/2026-04-part-001.csv"
+        ],
+        "2026-05": [
+          "data/HIRIPRO-V7/2026-05-part-001.csv"
+        ],
+        "2026-06": [
+          "data/HIRIPRO-V7/2026-06-part-001.csv"
+        ],
+        "2026-07": [
+          "data/HIRIPRO-V7/2026-07-part-001.csv"
+        ]
+      }
+    },
+    {
+      "device_id": 236,
+      "code": "HIRIPRO-V9",
+      "name": "Esc. Santa Margarita",
+      "location": "Catemu",
+      "months": {
+        "2026-04": [
+          "data/HIRIPRO-V9/2026-04-part-001.csv"
+        ],
+        "2026-05": [
+          "data/HIRIPRO-V9/2026-05-part-001.csv"
+        ],
+        "2026-06": [
+          "data/HIRIPRO-V9/2026-06-part-001.csv"
+        ],
+        "2026-07": [
+          "data/HIRIPRO-V9/2026-07-part-001.csv"
+        ]
+      }
+    },
+    {
+      "device_id": 227,
+      "code": "HIRIPRO-V3",
+      "name": "Esc. Basica Las Vegas",
+      "location": "Las Vegas",
+      "months": {
+        "2026-04": [
+          "data/HIRIPRO-V3/2026-04-part-001.csv"
+        ],
+        "2026-05": [
+          "data/HIRIPRO-V3/2026-05-part-001.csv"
+        ],
+        "2026-06": [
+          "data/HIRIPRO-V3/2026-06-part-001.csv"
+        ],
+        "2026-07": [
+          "data/HIRIPRO-V3/2026-07-part-001.csv"
+        ]
+      }
+    },
+    {
+      "device_id": 238,
+      "code": "HIRIPRO-V11",
+      "name": "Escuela Ema Lobos",
+      "location": "Panquehue",
+      "months": {
+        "2026-05": [
+          "data/HIRIPRO-V11/2026-05-part-001.csv"
+        ],
+        "2026-06": [
+          "data/HIRIPRO-V11/2026-06-part-001.csv"
+        ],
+        "2026-07": [
+          "data/HIRIPRO-V11/2026-07-part-001.csv"
+        ]
+      }
+    },
+    {
+      "device_id": 235,
+      "code": "HIRIPRO-V8",
+      "name": "SSR Los Aromos",
+      "location": "Catemu",
+      "months": {
+        "2026-04": [
+          "data/HIRIPRO-V8/2026-04-part-001.csv"
+        ],
+        "2026-05": [
+          "data/HIRIPRO-V8/2026-05-part-001.csv"
+        ],
+        "2026-06": [
+          "data/HIRIPRO-V8/2026-06-part-001.csv"
+        ],
+        "2026-07": [
+          "data/HIRIPRO-V8/2026-07-part-001.csv"
+        ]
+      }
+    }
+  ]
+}

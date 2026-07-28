@@ -1,0 +1,62 @@
+[
+  {
+    "device_id": 233,
+    "code": "HIRIPRO-V6",
+    "name": "Colegio El Melon",
+    "location": "El Melon"
+  },
+  {
+    "device_id": 237,
+    "code": "HIRIPRO-V10",
+    "name": "Esc. Agricola Quillota",
+    "location": "Quillota"
+  },
+  {
+    "device_id": 239,
+    "code": "HIRIPRO-V12",
+    "name": "Estacion Las Coimas",
+    "location": "Putaendo"
+  },
+  {
+    "device_id": 228,
+    "code": "HIRIPRO-V4",
+    "name": "Esc. Carolina Ocampo",
+    "location": "San Felipe"
+  },
+  {
+    "device_id": 225,
+    "code": "HIRIPRO-V2",
+    "name": "Esc. Carmela Carvajal",
+    "location": "San Felipe"
+  },
+  {
+    "device_id": 234,
+    "code": "HIRIPRO-V7",
+    "name": "Esc. Vina Errazuriz",
+    "location": "Panquehue"
+  },
+  {
+    "device_id": 236,
+    "code": "HIRIPRO-V9",
+    "name": "Esc. Santa Margarita",
+    "location": "Catemu"
+  },
+  {
+    "device_id": 227,
+    "code": "HIRIPRO-V3",
+    "name": "Esc. Basica Las Vegas",
+    "location": "Las Vegas"
+  },
+  {
+    "device_id": 238,
+    "code": "HIRIPRO-V11",
+    "name": "Escuela Ema Lobos",
+    "location": "Panquehue"
+  },
+  {
+    "device_id": 235,
+    "code": "HIRIPRO-V8",
+    "name": "SSR Los Aromos",
+    "location": "Catemu"
+  }
+]

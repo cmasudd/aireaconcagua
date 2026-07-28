@@ -197,7 +197,10 @@ header{background:#1a3a5c;color:#fff;padding:0 20px;display:flex;align-items:cen
     </select>
     <span class="ctrl-lbl" style="margin-left:10px">Periodo</span>
     <select class="ctrl-sel" id="sel-per" onchange="onPerChange()">
-      <option value="24h">Ultima lectura</option>
+      <option value="24h">Ultimas 24 horas</option>
+      <option value="7d">Ultimos 7 dias</option>
+      <option value="1m">Ultimo mes</option>
+      <option value="total">Total desde instalacion</option>
     </select>
     <span class="ctrl-info" id="ctrl-info"></span>
   </div>
@@ -285,12 +288,18 @@ header{background:#1a3a5c;color:#fff;padding:0 20px;display:flex;align-items:cen
           <div class="kd-viz-hdr">
             <span class="kd-viz-lbl">&#128202; Visualizacion:</span>
             <select class="viz-sel-el" id="viz-sel" onchange="updateViz()" style="flex:1.4">
+              <option value="clock">&#128336; Reloj 24 horas</option>
+              <option value="trend">&#128200; Tendencia temporal</option>
+              <option value="daytime">&#127769; Franjas del dia</option>
               <option value="compare">&#127979; Comparar con la red</option>
             </select>
             <select class="viz-sel-el" id="kd-per-sel" onchange="onKidsPerChange()" style="flex:0.9;max-width:140px">
-              <option value="24h">Ultima lectura</option>
+              <option value="24h">Ultimas 24h</option>
+              <option value="7d">Ultimos 7 dias</option>
+              <option value="1m">Ultimo mes</option>
+              <option value="total">Total instalacion</option>
             </select>
-            <span class="kd-viz-note" id="viz-note">Ultima lectura de la red</span>
+            <span class="kd-viz-note" id="viz-note">Datos de las ultimas 24h</span>
           </div>
 
           <!-- Viz area -->
@@ -449,7 +458,7 @@ var VCFG={
   temp:{label:'Temperatura',unit:'\u00b0C',ymax:40},
   hum: {label:'Humedad',   unit:'%',ymax:100}
 };
-var PERIOD_LABELS={'24h':'Ultima lectura','7d':'Ultimos 7 dias','1m':'Ultimo mes','total':'Total instalacion'};
+var PERIOD_LABELS={'24h':'Ultimas 24 horas','7d':'Ultimos 7 dias','1m':'Ultimo mes','total':'Total instalacion'};
 var FACES=['&#128513;','&#128522;','&#128528;','&#128567;','&#128680;','&#9940;'];
 var ST={v:'mp25',p:'24h',sel:-1};
 
@@ -955,7 +964,11 @@ function updateKidsDetail(i){
   /* Update DOM */
   document.getElementById('kd-name').textContent=s.name;
   document.getElementById('kd-loc-badge').textContent=s.loc+' \u00b7 '+s.type+' \u00b7 Variables: '+s.vars.join(', ');
-  document.getElementById('kd-dl').disabled=false;
+  var downloadButton=document.getElementById('kd-dl');
+  downloadButton.disabled=!FULL_LOADED[i+'_'+ST.p];
+  downloadButton.textContent=downloadButton.disabled
+    ? 'Cargando CSV\u2026'
+    : '\u2b07 Descargar '+vc.label+' CSV';
   document.getElementById('kf').innerHTML=cat.f||'&#127774;';
   document.getElementById('kd-bigval').textContent=Math.round(cur);
   document.getElementById('kd-bigval').style.color=cat.c;
@@ -1001,39 +1014,28 @@ function selSt(i){
 function downloadData(){
   if(ST.sel<0)return;
   var s=STS[ST.sel];
-  var raw=RAW_CACHE[ST.sel+'_'+ST.p];
-  if(!raw||raw.length===0){
-    alert('Los datos reales aun se estan cargando para esta estacion y periodo. Espera unos segundos e intenta de nuevo.');
+  var rows=NORMALIZED_CACHE[ST.sel+'_'+ST.p];
+  if(!FULL_LOADED[ST.sel+'_'+ST.p]||!rows||rows.length===0){
+    alert('Los CSV aun se estan cargando para esta estacion y periodo. Espera unos segundos e intenta de nuevo.');
     return;
   }
-  /* Full multi-variable export with real ISO timestamps -- not just the
-     currently-selected variable with abbreviated display labels. */
-  var header=['fecha','mp25_ugm3','mp10_ugm3','so2_ppb','cov_ppb','temperatura_C','humedad_pct','estacion','ubicacion','tipo','codigo_sensor'];
-  var rows=[header.join(',')];
-  raw.forEach(function(r){
-    var mp25=safeFloat(r[CMAS_FIELD_MAP.mp25]);
-    var mp10=safeFloat(r[CMAS_FIELD_MAP.mp10]);
-    var so2raw=safeFloat(r[CMAS_FIELD_MAP.so2]);
-    var so2=(so2raw===null)?'':(so2raw*SO2_PPM_TO_PPB).toFixed(1);
-    var cov=safeFloat(r[CMAS_FIELD_MAP.cov]);
-    var temp=safeFloat(r[CMAS_FIELD_MAP.temp]);
-    var hum=safeFloat(r[CMAS_FIELD_MAP.hum]);
-    rows.push([
-      r.fecha,
-      mp25===null?'':mp25,
-      mp10===null?'':mp10,
-      so2,
-      cov===null?'':cov,
-      temp===null?'':temp,
-      hum===null?'':hum,
-      '"'+s.name+'"','"'+s.loc+'"','"'+s.type+'"',s.code||''
+  var selectedRows=rows.filter(function(r){return r.variable===ST.v&&safeFloat(r.valor)!==null;});
+  if(selectedRows.length===0){
+    alert('No hay datos de '+VCFG[ST.v].label+' para esta estacion y periodo.');
+    return;
+  }
+  var output=[['fecha','valor','unidad','variable','codigo_estacion','estacion'].join(',')];
+  selectedRows.forEach(function(r){
+    output.push([
+      r.fecha,r.valor,'"'+VCFG[ST.v].unit+'"',r.variable,s.code,
+      '"'+s.name.replace(/"/g,'""')+'"'
     ].join(','));
   });
-  var csv=rows.join('\n');
+  var csv=output.join('\n');
   var blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
   var url=URL.createObjectURL(blob);
   var a=document.createElement('a');
-  a.href=url; a.download=s.name.replace(/[^a-zA-Z0-9]/g,'_')+'_'+ST.p+'_completo.csv';
+  a.href=url; a.download=s.code+'_'+ST.v+'_'+ST.p+'.csv';
   document.body.appendChild(a); a.click();
   document.body.removeChild(a); URL.revokeObjectURL(url);
 }
@@ -1133,40 +1135,33 @@ function setMode(m){
 }
 
 /* ================================================================
-   LIVE DATA LAYER  --  CMAS sensor network (real data)
-   Endpoint: https://api-sensores.cmasccp.cl/listarDatosEstructuradosV2
-             ?tabla=datos&disp.id_proyecto=18&disp.codigo_interno={CODE}
-             &order_by=fecha_insercion&limite={N}
-   Response: { status:"success", data:{ tableData:[ {...}, ... ] } }
-   Records arrive NEWEST FIRST -- must reverse for chronological charts.
+   DATA LAYER -- monthly CSV files served by the same GitHub Pages site.
+   The browser never calls api-sensores.cmasccp.cl.  MariaDB is exported
+   locally once per hour by scripts/export_monthly_csv.py.
    ================================================================ */
 
-var API_BASE = 'https://api-sensores.cmasccp.cl/listarDatosEstructuradosV2';
-var ID_PROYECTO = '18';
+var DATA_CACHE = {};       /* "stIdx_var_period" -> chart series */
+var RAW_CACHE = {};        /* "stIdx_period" -> sparse records for profiles */
+var NORMALIZED_CACHE = {}; /* "stIdx_period" -> original normalized CSV rows */
+var LOADING = {};
+var FULL_LOADED = {};
+var MANIFEST = null;
+var MANIFEST_BY_CODE = {};
+var LIVE_MODE = false;
+var DATA_VERSION = '';
 
-var DATA_CACHE = {};   /* key: "stIdx_varKey_period" -> {labels[], values[]} */
-var RAW_CACHE  = {};   /* key: "stIdx_period" -> chronological raw records (for hourly-profile binning) */
-var LOADING    = {};   /* key: "stIdx_period"        -> bool                 */
-var RETRY_DONE = {};   /* key: "stIdx_period"        -> bool (one retry already used) */
-var LIVE_MODE  = false;
-
-/* Exact CMAS column names (long, instrument-prefixed, must match verbatim) */
+/* Internal field aliases retained so the existing chart code can stay small. */
 var CMAS_FIELD_MAP = {
-  mp25: 'PMS5003 [Material particulado PM 2.5 (\u00b5g/m\u00b3)]',
-  mp10: 'PMS5003 [Material particulado PM 10 (\u00b5g/m\u00b3)]',
-  so2:  'Gravity: Factory Calibrated Electrochemical multigas So2 [Dioxido de Azufre (So2,ppm) (ppm)]',
-  cov:  'Fermion: ENS160 Air Quality Sensor [TVOC (ppb)]',
-  /* SHT40 chosen over PMS5003 for temp/humidity -- dedicated sensor, higher precision */
-  temp: 'SHT40 [Grados celcius (\u00b0C)]',
-  hum:  'SHT40 [Humedad (%)]'
+  mp25: 'mp25',
+  mp10: 'mp10',
+  so2: 'so2',
+  cov: 'cov',
+  temp: 'temp',
+  hum: 'hum'
 };
 
-/* SO2 arrives in ppm from the sensor -- convert to ppb for display/norms */
-var SO2_PPM_TO_PPB = 1000;
-
-/* Request the minimum accepted by the API. The response is also trimmed
-   client-side because the endpoint currently returns one extra row. */
-var LATEST_RECORD_LIMIT = 1;
+/* The exporter already converts SO2 from ppm to ppb. */
+var SO2_PPM_TO_PPB = 1;
 
 /* Trim raw chronological records to an exact calendar window, instead
    of trusting that "N rows" = "N days" (which silently breaks when the
@@ -1242,11 +1237,14 @@ function aggregateRecords(records, period) {
   });
 }
 
-/* Build {labels, values} for one variable from chronological API records */
+/* Build {labels, values} from sparse normalized CSV records. */
 function buildSeries(records, varKey, period) {
   var field = CMAS_FIELD_MAP[varKey];
   if (!field) return null;
-  var agg = aggregateRecords(records, period);
+  var variableRecords = records.filter(function(r){
+    return safeFloat(r[field]) !== null;
+  });
+  var agg = aggregateRecords(variableRecords, period);
   var mult = (varKey === 'so2') ? SO2_PPM_TO_PPB : 1;
   var labels = [], values = [], mins = [], maxs = [];
   var hasRange = (period !== '24h');  /* only daily/monthly buckets carry a real range */
@@ -1266,107 +1264,191 @@ function buildSeries(records, varKey, period) {
   return result;
 }
 
-/* ── fetch one station's history (one call -> all 6 variables cached) ── */
+function parseCSV(text) {
+  var lines = text.replace(/\r/g,'').split('\n');
+  if (!lines.length || !lines[0]) return [];
+  var headers = lines[0].split(',');
+  return lines.slice(1).filter(function(line){return line!=='';}).map(function(line){
+    var cells=line.split(','), row={};
+    headers.forEach(function(header,i){row[header]=cells[i]===undefined?'':cells[i];});
+    return row;
+  });
+}
+
+function normalizedToRaw(rows) {
+  return rows.map(function(row){
+    var record={fecha:row.fecha};
+    var value=safeFloat(row.valor);
+    if(value!==null && CMAS_FIELD_MAP[row.variable]){
+      record[CMAS_FIELD_MAP[row.variable]]=value;
+    }
+    return record;
+  });
+}
+
+function expandMonthlyRows(rows) {
+  var columns={
+    mp25:'mp25_ugm3',
+    mp10:'mp10_ugm3',
+    so2:'so2_ppb',
+    cov:'cov_ppb',
+    temp:'temperatura_c',
+    hum:'humedad_pct'
+  };
+  var output=[];
+  rows.forEach(function(row){
+    Object.keys(columns).forEach(function(variable){
+      var value=row[columns[variable]];
+      if(safeFloat(value)===null)return;
+      output.push({
+        fecha:row.fecha,
+        id_dato:'',
+        id_sensor:'',
+        variable:variable,
+        valor:value
+      });
+    });
+  });
+  return output;
+}
+
+function latestTimestampFor(code) {
+  var rows=(window.LATEST_BY_CODE&&window.LATEST_BY_CODE[code])||[];
+  var latest=0;
+  rows.forEach(function(row){
+    latest=Math.max(latest,new Date(row.fecha).getTime());
+  });
+  return latest||Date.now();
+}
+
+function monthPathsFor(stationMeta, period) {
+  var months=Object.keys(stationMeta.months||{}).sort();
+  if(period==='total') return months.reduce(function(all,month){
+    return all.concat(stationMeta.months[month]);
+  },[]);
+  var days=(period==='24h')?1:(period==='7d')?7:30;
+  var cutoff=latestTimestampFor(stationMeta.code)-days*24*3600*1000;
+  return months.filter(function(month){
+    var parts=month.split('-');
+    var monthEnd=new Date(Number(parts[0]),Number(parts[1]),1).getTime();
+    return monthEnd>=cutoff;
+  }).reduce(function(all,month){return all.concat(stationMeta.months[month]);},[]);
+}
+
+function cacheRows(stIdx, period, rows, isFull) {
+  rows.sort(function(a,b){
+    var byDate=new Date(a.fecha)-new Date(b.fecha);
+    return byDate||(Number(a.id_dato||0)-Number(b.id_dato||0));
+  });
+  var raw=filterByCalendarWindow(normalizedToRaw(rows),period);
+  var cutoff=raw.length?new Date(raw[0].fecha).getTime():0;
+  var filteredRows=(period==='total'||!cutoff)?rows:rows.filter(function(row){
+    return new Date(row.fecha).getTime()>=cutoff;
+  });
+  RAW_CACHE[stIdx+'_'+period]=raw;
+  NORMALIZED_CACHE[stIdx+'_'+period]=filteredRows;
+  Object.keys(CMAS_FIELD_MAP).forEach(function(varKey){
+    var series=buildSeries(raw,varKey,period);
+    if(series) DATA_CACHE[stIdx+'_'+varKey+'_'+period]=series;
+  });
+  if(isFull) FULL_LOADED[stIdx+'_'+period]=true;
+}
+
+/* Fetch only the selected monthly files from GitHub Pages. */
 function fetchHistory(stIdx, period) {
   var s = STS[stIdx];
-  if (!s.code) return;
-
+  var meta=MANIFEST_BY_CODE[s.code];
+  if(!meta)return;
   var lockKey = stIdx + '_' + period;
-  if (LOADING[lockKey]) return;
+  if (LOADING[lockKey]||FULL_LOADED[lockKey]) return;
   LOADING[lockKey] = true;
-
-  var url = API_BASE +
-    '?tabla=datos' +
-    '&disp.id_proyecto=' + ID_PROYECTO +
-    '&disp.codigo_interno=' + encodeURIComponent(s.code) +
-    '&order_by=fecha_insercion' +
-    '&limite=' + LATEST_RECORD_LIMIT;
-
-  fetch(url)
-    .then(function(r) {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return r.json();
-    })
-    .then(function(json) {
-      var raw = (json && json.data && json.data.tableData) || [];
-      if (!Array.isArray(raw) || raw.length === 0) { LOADING[lockKey] = false; return; }
-
-      /* CMAS returns newest-first -- reverse to chronological for charts */
-      /* The API currently returns an extra row for limite=1. Keep only
-         the first item because records arrive newest-first. */
-      var records = raw.slice(0, 1).reverse();
-      records = filterByCalendarWindow(records, period);  /* trim to the real calendar window */
-      RAW_CACHE[stIdx + '_' + period] = records;   /* keep raw rows for hourly-profile binning */
-
-      Object.keys(CMAS_FIELD_MAP).forEach(function(varKey) {
-        var ser = buildSeries(records, varKey, period);
-        if (ser) DATA_CACHE[stIdx + '_' + varKey + '_' + period] = ser;
-      });
-
-      LIVE_MODE = true;
-      LOADING[lockKey] = false;
-      updateLiveIndicator();
-
+  var paths=monthPathsFor(meta,period);
+  Promise.all(paths.map(function(path){
+    return fetch(path+'?v='+encodeURIComponent(DATA_VERSION)).then(function(response){
+      if(!response.ok)throw new Error('HTTP '+response.status+' en '+path);
+      return response.text();
+    }).then(parseCSV);
+  })).then(function(groups){
+      var rows=[];
+      groups.forEach(function(group){rows=rows.concat(expandMonthlyRows(group));});
+      cacheRows(stIdx,period,rows,true);
+      LOADING[lockKey]=false;
       updateMarkerIcon(stIdx);
-      if (ST.p === period) { buildList(); updateBottomCharts(); }
-      if (ST.sel === stIdx && ST.p === period) { updateProDetail(stIdx); updateKidsDetail(stIdx); }
-    })
-    .catch(function(err) {
-      LOADING[lockKey] = false;
-      /* One bounded retry per fetch cycle -- handles transient 502s
-         without waiting for the 5-min refresh. Crucially, the flag is
-         only cleared by the periodic refresh below, NOT here -- clearing
-         it right before retrying caused an infinite retry loop against
-         a persistently-failing station (caught via testing, fixed). */
-      if (!RETRY_DONE[lockKey]) {
-        console.warn('[CMAS API] ' + s.name + ' ' + period + ': ' + err.message + ' -- retrying once in 4s');
-        RETRY_DONE[lockKey] = true;
-        setTimeout(function(){ fetchHistory(stIdx, period); }, 4000);
-      } else {
-        console.warn('[CMAS API] ' + s.name + ' ' + period + ': ' + err.message + ' -- giving up until next refresh cycle');
-      }
-    });
+      if(ST.p===period){buildList();updateBottomCharts();}
+      if(ST.sel===stIdx&&ST.p===period){updateProDetail(stIdx);updateKidsDetail(stIdx);}
+  }).catch(function(error){
+      LOADING[lockKey]=false;
+      console.warn('[CSV] '+s.name+' '+period+': '+error.message);
+  });
 }
 
-/* ── smart wrapper: cache hit -> real data, else mock + background fetch ── */
 function getSeriesData(stIdx, varKey, period) {
   var cacheKey = stIdx + '_' + varKey + '_' + period;
-  if (DATA_CACHE[cacheKey]) return DATA_CACHE[cacheKey];
-  fetchHistory(stIdx, period);                 /* starts in background     */
-  return genMockSeries(stIdx, varKey, period);  /* shown while it loads     */
+  if(period!=='24h'||stIdx===ST.sel)fetchHistory(stIdx,period);
+  if(DATA_CACHE[cacheKey])return DATA_CACHE[cacheKey];
+  return genMockSeries(stIdx,varKey,period);
 }
 
-/* ── live indicator dot in header ── */
 function updateLiveIndicator() {
   var dot = document.getElementById('live-dot');
   var lbl = document.getElementById('live-lbl');
   if (!dot || !lbl) return;
-  if (LIVE_MODE) { dot.style.background = '#22c55e'; lbl.textContent = 'En vivo'; }
+  if (LIVE_MODE) { dot.style.background = '#22c55e'; lbl.textContent = 'CSV horario'; }
   else           { dot.style.background = '#f97316'; lbl.textContent = 'Datos de ejemplo'; }
 }
 
-/* ── init: fetch 24h for every coded station (staggered), then refresh every 5 min ── */
-function initLiveData() {
-  STS.forEach(function(s, i) {
-    if (!s.code) return;
-    setTimeout(function() { fetchHistory(i, '24h'); }, i * 600);
+function applyLatest(rows) {
+  window.LATEST_BY_CODE={};
+  rows.forEach(function(row){
+    if(!window.LATEST_BY_CODE[row.codigo])window.LATEST_BY_CODE[row.codigo]=[];
+    window.LATEST_BY_CODE[row.codigo].push(row);
   });
-
-  setInterval(function() {
-    STS.forEach(function(s, i) {
-      if (!s.code) return;
-      ['mp25','mp10','so2','cov','temp','hum'].forEach(function(v) {
-        delete DATA_CACHE[i + '_' + v + '_24h'];
-      });
-      delete LOADING[i + '_24h'];
-      delete RETRY_DONE[i + '_24h'];
-      fetchHistory(i, '24h');
-    });
-  }, 5 * 60 * 1000);
+  STS.forEach(function(station,stIdx){
+    var latest=window.LATEST_BY_CODE[station.code]||[];
+    cacheRows(stIdx,'24h',latest.map(function(row,index){
+      return {
+        fecha:row.fecha,
+        id_dato:index,
+        id_sensor:'',
+        variable:row.variable,
+        valor:row.valor
+      };
+    }),false);
+  });
 }
 
-setTimeout(initLiveData, 600);
-/* end live data layer */
+function initLiveData() {
+  var version=Date.now();
+  Promise.all([
+    fetch('data/manifest.json?v='+version).then(function(response){
+      if(!response.ok)throw new Error('No se pudo cargar manifest.json');
+      return response.json();
+    }),
+    fetch('data/latest.csv?v='+version).then(function(response){
+      if(!response.ok)throw new Error('No se pudo cargar latest.csv');
+      return response.text();
+    })
+  ]).then(function(result){
+    MANIFEST=result[0];
+    DATA_VERSION=MANIFEST.updated_at||version;
+    MANIFEST_BY_CODE={};
+    MANIFEST.stations.forEach(function(station){MANIFEST_BY_CODE[station.code]=station;});
+    applyLatest(parseCSV(result[1]));
+    LIVE_MODE=true;
+    updateLiveIndicator();
+    var badge=document.querySelector('.sb-badge');
+    if(badge)badge.textContent='CSV: '+new Date(MANIFEST.updated_at).toLocaleString('es-CL');
+    updateAll();
+    if(ST.sel>=0)fetchHistory(ST.sel,ST.p);
+  }).catch(function(error){
+    console.warn('[CSV] '+error.message);
+    updateLiveIndicator();
+  });
+}
+
+setTimeout(initLiveData,200);
+setInterval(initLiveData,60*60*1000);
+/* end CSV data layer */
 
 updateAll();
 setTimeout(function(){selSt(0);},400);
