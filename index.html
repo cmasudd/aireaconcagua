@@ -153,6 +153,7 @@ header{background:#1a3a5c;color:#fff;padding:0 20px;display:flex;align-items:cen
 .logos-section{background:#fff;border-radius:14px;padding:28px 24px;margin-bottom:24px;border:1px solid #e2e8f0}
 .logos-row{display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap;padding:14px 0}
 .logos-row img{height:84px;width:auto;max-width:260px;object-fit:contain}
+.logos-row img:last-child{width:120px;height:120px}
 .logos-divider{width:1px;height:40px;background:#e2e8f0}
 .logos-label{font-size:10px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.6px;text-align:center;margin-bottom:10px}
 
@@ -196,10 +197,7 @@ header{background:#1a3a5c;color:#fff;padding:0 20px;display:flex;align-items:cen
     </select>
     <span class="ctrl-lbl" style="margin-left:10px">Periodo</span>
     <select class="ctrl-sel" id="sel-per" onchange="onPerChange()">
-      <option value="24h">Ultimas 24 horas</option>
-      <option value="7d">Ultimos 7 dias</option>
-      <option value="1m">Ultimo mes</option>
-      <option value="total">Total desde instalacion</option>
+      <option value="24h">Ultima lectura</option>
     </select>
     <span class="ctrl-info" id="ctrl-info"></span>
   </div>
@@ -236,7 +234,7 @@ header{background:#1a3a5c;color:#fff;padding:0 20px;display:flex;align-items:cen
       <div class="pro-btm">
         <div class="btm-hd">
           <div><div class="btm-title" id="btm-title">Red &ndash; MP 2.5</div>
-          <div class="btm-sub">Series temporales y ranking actual</div></div>
+          <div class="btm-sub">Ultima lectura y ranking actual</div></div>
         </div>
         <div class="ch2">
           <div class="cw"><canvas id="net-chart"></canvas></div>
@@ -279,7 +277,7 @@ header{background:#1a3a5c;color:#fff;padding:0 20px;display:flex;align-items:cen
               <div class="kd-mbox"><div class="kd-mv" id="kds-max">-</div><div class="kd-ml">Maximo</div></div>
               <div class="kd-mbox"><div class="kd-mv" id="kds-min">-</div><div class="kd-ml">Minimo</div></div>
               <div class="kd-mbox"><div class="kd-mv" id="kds-avg">-</div><div class="kd-ml">Promedio</div></div>
-              <div class="kd-mbox"><div class="kd-mv" id="kds-ovr">-</div><div class="kd-ml">Horas sobre norma</div></div>
+              <div class="kd-mbox"><div class="kd-mv" id="kds-ovr">-</div><div class="kd-ml">Sobre norma</div></div>
             </div>
           </div>
 
@@ -287,18 +285,12 @@ header{background:#1a3a5c;color:#fff;padding:0 20px;display:flex;align-items:cen
           <div class="kd-viz-hdr">
             <span class="kd-viz-lbl">&#128202; Visualizacion:</span>
             <select class="viz-sel-el" id="viz-sel" onchange="updateViz()" style="flex:1.4">
-              <option value="clock">&#128336; Reloj 24 horas</option>
-              <option value="trend">&#128200; Tendencia temporal</option>
-              <option value="daytime">&#127769; Franjas del dia</option>
               <option value="compare">&#127979; Comparar con la red</option>
             </select>
             <select class="viz-sel-el" id="kd-per-sel" onchange="onKidsPerChange()" style="flex:0.9;max-width:140px">
-              <option value="24h">Ultimas 24h</option>
-              <option value="7d">Ultimos 7 dias</option>
-              <option value="1m">Ultimo mes</option>
-              <option value="total">Total instalacion</option>
+              <option value="24h">Ultima lectura</option>
             </select>
-            <span class="kd-viz-note" id="viz-note">Datos de las ultimas 24h</span>
+            <span class="kd-viz-note" id="viz-note">Ultima lectura de la red</span>
           </div>
 
           <!-- Viz area -->
@@ -328,7 +320,7 @@ header{background:#1a3a5c;color:#fff;padding:0 20px;display:flex;align-items:cen
     <div class="proy-hero">
       <h1>El Aire que Respiramos</h1>
       <h2>Ciencia comunitaria para enfrentar la contaminacion atmosferica en la Region de Valparaiso</h2>
-      <p>Medimos Material Particulado respirable (MP 2,5) y grueso (MP 10) en 10 escuelas y centros comunitarios del valle de Aconcagua entre mayo y diciembre 2026.</p>
+      <p>Medimos material particulado fino (MP2,5) y material particulado respirable (MP10) en 10 escuelas y centros comunitarios del valle de Aconcagua entre abril y noviembre de 2026.</p>
     </div>
     <div class="logos-section">
       <div class="logos-label" style="font-size:11px;font-weight:500;color:#64748b;text-transform:none;letter-spacing:0;max-width:600px;margin:0 auto 4px">Financiado por el FNDR del Gobierno Regional de Valpara&iacute;so 2025 y aprobado por el Consejo Regional de Valpara&iacute;so</div>
@@ -349,7 +341,7 @@ header{background:#1a3a5c;color:#fff;padding:0 20px;display:flex;align-items:cen
       <div class="team-grid">
         <div class="team-card"><div class="t-name">Carolina Pavez, Paula Rodriguez y Surimana P&eacute;rez</div><div class="t-org">Corporaci&oacute;n Caudal</div><div class="t-role">Coordinaci&oacute;n y vinculaci&oacute;n comunitaria</div></div>
         <div class="team-card"><div class="t-name">Ver&oacute;nica Molina, Carolina Aguirre, Rodrigo C&aacute;ceres y Alejandra Mellado</div><div class="t-org">Hub Ambiental &ndash; UPLA</div><div class="t-role">Investigaci&oacute;n ambiental y an&aacute;lisis de laboratorio</div></div>
-        <div class="team-card"><div class="t-name">Zo&euml; Fleming, Pablo Ort&iacute;z-Baeza y Rodrigo Ortega</div><div class="t-org">Centro C+ &ndash; Universidad del Desarrollo</div><div class="t-role">Desarrollo tecnol&oacute;gico, plataforma y an&aacute;lisis de datos</div></div>
+        <div class="team-card"><div class="t-name">Alejandro Rebolledo, Camilo Rodríguez, Marcos Arce, Christopher Silva, Zo&euml; Fleming, Pablo Ort&iacute;z-Baeza y Rodrigo Ortega</div><div class="t-org">Centro C+ &ndash; Universidad del Desarrollo</div><div class="t-role">Desarrollo tecnol&oacute;gico, plataforma y an&aacute;lisis de datos</div></div>
         <div class="team-card"><div class="t-name">Javiera Castro</div><div class="t-org">Universidad de Chile</div><div class="t-role">Estudiante de Tesis &ndash; An&aacute;lisis de datos</div></div>
       </div>
     </div>
@@ -370,6 +362,7 @@ header{background:#1a3a5c;color:#fff;padding:0 20px;display:flex;align-items:cen
         <div class="instr-card">
           <div class="instr-name">Instrumento continuo MP2.5/MP10/SO2/COVtotal</div>
           <div class="instr-desc">Instrumento para monitoreo de MP 2.5, MP 10, Temperatura y Humedad (y en 3 casos, SO&#8322; y COVtotal) con transmisi&oacute;n online en tiempo real.</div>
+          <div style="margin-top:8px"><a href="EstacionAire.pdf" target="_blank" style="font-size:11px;color:#2563eb;text-decoration:none;font-weight:500">&#128203; Ver Manual ESTACIÓN CALIDAD DE AIRE &rarr;</a></div>
         </div>
         <div class="instr-card">
           <div class="instr-name">Captador de Polvo Pasivo</div>
@@ -386,8 +379,9 @@ header{background:#1a3a5c;color:#fff;padding:0 20px;display:flex;align-items:cen
     </div>
     <div class="mb24"><div class="sec-title">&#127909; Video del Proyecto</div>
       <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:11px;margin-bottom:0">
-        <iframe src="https://www.youtube.com/embed/-ZQIu1MSdOc" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen title="El Aire que Respiramos"></iframe>
+        <iframe src="https://www.youtube.com/embed/-ZQIu1MSdOc?rel=0" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share" allowfullscreen title="El Aire que Respiramos"></iframe>
       </div>
+      <div style="font-size:11px;color:#64748b;margin-top:8px;text-align:center">Si el reproductor no aparece, <a href="https://www.youtube.com/watch?v=-ZQIu1MSdOc" target="_blank" rel="noopener noreferrer" style="color:#2563eb;font-weight:600">ver el video directamente en YouTube</a>.</div>
     </div>
     <div class="mb24"><div class="sec-title">&#128229; Documentos</div>
       <div class="docs-grid">
@@ -405,12 +399,12 @@ var STS=[
   {id:1,name:'Esc. Agricola Quillota', loc:'Quillota',  type:'Escuela basica',        lat:-32.90599,lng:-71.27094,vars:['mp25','mp10','so2','cov','temp','hum'],code:'HIRIPRO-V10'},
   {id:2,name:'Estacion Las Coimas',    loc:'Putaendo',  type:'Centro Cultural',       lat:-32.69609,lng:-70.73290,vars:['mp25','mp10','temp','hum'],       code:'HIRIPRO-V12'},
   {id:3,name:'Esc. Carolina Ocampo',   loc:'San Felipe',type:'Escuela basica',        lat:-32.72095,lng:-70.77361,vars:['mp25','mp10','temp','hum'],               code:'HIRIPRO-V4'},
-  {id:4,name:'Esc. Carmela Carvajal',  loc:'Catemu',    type:'Escuela basica',        lat:-32.78918,lng:-70.67814,vars:['mp25','mp10','temp','hum'],code:'HIRIPRO-V2'},
+  {id:4,name:'Esc. Carmela Carvajal',  loc:'San Felipe',    type:'Escuela basica',        lat:-32.78918,lng:-70.67814,vars:['mp25','mp10','temp','hum'],code:'HIRIPRO-V2'},
   {id:5,name:'Esc. Vina Errazuriz',    loc:'Panquehue', type:'Escuela basica',        lat:-32.79682,lng:-70.82648,vars:['mp25','mp10','temp','hum'],               code:'HIRIPRO-V7'},
-  {id:6,name:'Esc. Santa Margarita',   loc:'Llay Llay', type:'Escuela basica',        lat:-32.77423,lng:-70.93392,vars:['mp25','mp10','so2','cov','temp','hum'],        code:'HIRIPRO-V9'},
+  {id:6,name:'Esc. Santa Margarita',   loc:'Catemu', type:'Escuela basica',        lat:-32.77423,lng:-70.93392,vars:['mp25','mp10','so2','cov','temp','hum'],        code:'HIRIPRO-V9'},
   {id:7,name:'Esc. Basica Las Vegas',  loc:'Las Vegas', type:'Escuela basica',        lat:-32.84062,lng:-70.99996,vars:['mp25','mp10','temp','hum'],       code:'HIRIPRO-V3'},
   {id:8,name:'Escuela Ema Lobos',      loc:'Panquehue', type:'Escuela basica',        lat:-32.79173,lng:-70.87123,vars:['mp25','mp10','temp','hum'],               code:'HIRIPRO-V11'},
-  {id:9,name:'SSR Los Aromos',         loc:'Llay Llay', type:'APR',                   lat:-32.80933,lng:-70.96142,vars:['mp25','mp10','so2','cov','temp','hum'],code:'HIRIPRO-V8'}
+  {id:9,name:'SSR Los Aromos',         loc:'Catemu', type:'APR',                   lat:-32.80933,lng:-70.96142,vars:['mp25','mp10','so2','cov','temp','hum'],code:'HIRIPRO-V8'}
 ];
 
 var THR={
@@ -455,7 +449,7 @@ var VCFG={
   temp:{label:'Temperatura',unit:'\u00b0C',ymax:40},
   hum: {label:'Humedad',   unit:'%',ymax:100}
 };
-var PERIOD_LABELS={'24h':'Ultimas 24 horas','7d':'Ultimos 7 dias','1m':'Ultimo mes','total':'Total instalacion'};
+var PERIOD_LABELS={'24h':'Ultima lectura','7d':'Ultimos 7 dias','1m':'Ultimo mes','total':'Total instalacion'};
 var FACES=['&#128513;','&#128522;','&#128528;','&#128567;','&#128680;','&#9940;'];
 var ST={v:'mp25',p:'24h',sel:-1};
 
@@ -838,7 +832,7 @@ function genClockSVG(stIdx,varKey){
 
 /* ===== KIDS VISUALIZATIONS ===== */
 var kdChart=null;
-var currentViz='clock';
+var currentViz='compare';
 
 function renderViz(stIdx,varKey){
   var svgW=document.getElementById('kd-svg-wrap');
@@ -957,7 +951,7 @@ function updateKidsDetail(i){
   var vc=VCFG[ST.v];
   /* Hours above primary norm */
   var normV=NORMS[ST.v].length>0?NORMS[ST.v][1]?NORMS[ST.v][1].v:NORMS[ST.v][0].v:null;
-  var ovrHrs=normV?vals.filter(function(v){return v>normV;}).length:'-';
+  var aboveNorm=normV?(cur>normV):null;
   /* Update DOM */
   document.getElementById('kd-name').textContent=s.name;
   document.getElementById('kd-loc-badge').textContent=s.loc+' \u00b7 '+s.type+' \u00b7 Variables: '+s.vars.join(', ');
@@ -972,7 +966,7 @@ function updateKidsDetail(i){
   document.getElementById('kds-max').textContent=mx.toFixed(1)+' '+vc.unit;
   document.getElementById('kds-min').textContent=mn.toFixed(1)+' '+vc.unit;
   document.getElementById('kds-avg').textContent=avg+' '+vc.unit;
-  document.getElementById('kds-ovr').textContent=(normV?(ovrHrs+'h de '+vals.length+'h'):'N/A');
+  document.getElementById('kds-ovr').textContent=(normV?(aboveNorm?'Si':'No'):'N/A');
   /* Message */
   var msgs={
     muybueno:'El aire en <strong>'+s.name+'</strong> esta bajo la norma anual. Excelente para actividades al aire libre! '+vc.label+' = <strong>'+Math.round(cur)+' '+vc.unit+'</strong>.',
@@ -1147,7 +1141,7 @@ function setMode(m){
    Records arrive NEWEST FIRST -- must reverse for chronological charts.
    ================================================================ */
 
-var API_BASE = '';
+var API_BASE = 'https://api-sensores.cmasccp.cl/listarDatosEstructuradosV2';
 var ID_PROYECTO = '18';
 
 var DATA_CACHE = {};   /* key: "stIdx_varKey_period" -> {labels[], values[]} */
@@ -1170,17 +1164,9 @@ var CMAS_FIELD_MAP = {
 /* SO2 arrives in ppm from the sensor -- convert to ppb for display/norms */
 var SO2_PPM_TO_PPB = 1000;
 
-/* These are OVER-estimates on purpose -- real sensors have gaps and
-   irregular intervals, so "N rows" never reliably equals "N days".
-   We fetch generously, then trim to an explicit calendar cutoff date
-   below (filterByCalendarWindow) so periods are always correct even
-   when reporting intervals drift. */
-var PERIOD_LIMITS = {
-  '24h':   400,     /* ~33h of 5-min data, trimmed to exactly last 24h  */
-  '7d':    4000,     /* ~14d of 5-min data, trimmed to exactly last 7d  */
-  '1m':    16000,    /* ~55d of 5-min data, trimmed to exactly last 30d */
-  'total': 120000    /* safety cap -- exceeds any real total            */
-};
+/* Request the minimum accepted by the API. The response is also trimmed
+   client-side because the endpoint currently returns one extra row. */
+var LATEST_RECORD_LIMIT = 1;
 
 /* Trim raw chronological records to an exact calendar window, instead
    of trusting that "N rows" = "N days" (which silently breaks when the
@@ -1289,13 +1275,12 @@ function fetchHistory(stIdx, period) {
   if (LOADING[lockKey]) return;
   LOADING[lockKey] = true;
 
-  var limit = PERIOD_LIMITS[period] || 288;
   var url = API_BASE +
     '?tabla=datos' +
     '&disp.id_proyecto=' + ID_PROYECTO +
     '&disp.codigo_interno=' + encodeURIComponent(s.code) +
     '&order_by=fecha_insercion' +
-    '&limite=' + limit;
+    '&limite=' + LATEST_RECORD_LIMIT;
 
   fetch(url)
     .then(function(r) {
@@ -1307,7 +1292,9 @@ function fetchHistory(stIdx, period) {
       if (!Array.isArray(raw) || raw.length === 0) { LOADING[lockKey] = false; return; }
 
       /* CMAS returns newest-first -- reverse to chronological for charts */
-      var records = raw.slice().reverse();
+      /* The API currently returns an extra row for limite=1. Keep only
+         the first item because records arrive newest-first. */
+      var records = raw.slice(0, 1).reverse();
       records = filterByCalendarWindow(records, period);  /* trim to the real calendar window */
       RAW_CACHE[stIdx + '_' + period] = records;   /* keep raw rows for hourly-profile binning */
 
