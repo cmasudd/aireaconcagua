@@ -7,8 +7,24 @@
 <link rel="stylesheet" href="assets/vendor/leaflet/leaflet-1.9.4.css"/>
 <script src="assets/vendor/leaflet/leaflet-1.9.4.js"></script>
 <script src="assets/vendor/chart.umd-4.4.1.js"></script>
-<style>*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh}
+<style>
+/* AJUSTES GLOBALES: cambia solo estos valores para redimensionar cada logo. */
+:root{
+  --logo-gobierno-height:160px;
+  --logo-gobierno-max-width:640px;
+  --logo-caudal-height:90px;
+  --logo-caudal-max-width:260px;
+  --logo-hub-height:90px;
+  --logo-hub-max-width:260px;
+  --logo-centro-height:120px;
+  --logo-centro-max-width:260px;
+  --site-footer-height:54px;
+  --disclaimer-width:820px;
+  --disclaimer-title-size:24px;
+  --disclaimer-text-size:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh;padding-bottom:var(--site-footer-height)}
 header{background:#1a3a5c;color:#fff;padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:1000;box-shadow:0 2px 8px rgba(0,0,0,.25);gap:12px}
 .hd-logo{display:flex;align-items:center;gap:8px;min-width:0}
 .hd-dot{width:9px;height:9px;border-radius:50%;background:#4fc3f7;flex-shrink:0}
@@ -25,7 +41,7 @@ header{background:#1a3a5c;color:#fff;padding:0 20px;display:flex;align-items:cen
 .ctrl-sel{padding:5px 28px 5px 10px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;font-weight:500;color:#1e293b;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2364748b'/%3E%3C/svg%3E") no-repeat right 8px center;appearance:none;cursor:pointer}
 .ctrl-sel:focus{outline:none;border-color:#2563eb}
 .ctrl-info{font-size:11px;color:#94a3b8;margin-left:auto}
-.pro-layout{display:grid;grid-template-columns:290px 1fr;grid-template-rows:1fr 215px;height:calc(100vh - 100px);overflow:hidden}
+.pro-layout{display:grid;grid-template-columns:290px 1fr;grid-template-rows:1fr 215px;height:calc(100vh - 100px - var(--site-footer-height));overflow:hidden}
 .pro-sb{background:#fff;border-right:1px solid #dde3ec;overflow-y:auto;display:flex;flex-direction:column;grid-row:1/2}
 .pro-map-wrap{position:relative;overflow:hidden;grid-row:1/2}
 #map{width:100%;height:100%}
@@ -152,8 +168,11 @@ header{background:#1a3a5c;color:#fff;padding:0 20px;display:flex;align-items:cen
 
 .logos-section{background:#fff;border-radius:14px;padding:28px 24px;margin-bottom:24px;border:1px solid #e2e8f0}
 .logos-row{display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap;padding:14px 0}
-.logos-row img{height:84px;width:auto;max-width:260px;object-fit:contain}
-.logos-row img:last-child{width:120px;height:120px}
+.logos-row img{width:auto;height:auto;max-width:100%;object-fit:contain}
+.logos-row img[alt="Gobierno Regional de Valparaiso"]{max-height:var(--logo-gobierno-height);max-width:min(var(--logo-gobierno-max-width),100%)}
+.logos-row img[alt="Corporacion Caudal"]{max-height:var(--logo-caudal-height);max-width:min(var(--logo-caudal-max-width),100%)}
+.logos-row img[alt="Hub Ambiental UPLA"]{max-height:var(--logo-hub-height);max-width:min(var(--logo-hub-max-width),100%)}
+.logos-row img[alt="Centro C+ UDD"]{max-height:var(--logo-centro-height);max-width:min(var(--logo-centro-max-width),100%)}
 .logos-divider{width:1px;height:40px;background:#e2e8f0}
 .logos-label{font-size:10px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.6px;text-align:center;margin-bottom:10px}
 
@@ -169,15 +188,18 @@ header{background:#1a3a5c;color:#fff;padding:0 20px;display:flex;align-items:cen
 .photo-card figcaption{padding:8px 11px;font-size:11px;color:#64748b}
 .data-actions{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0}
 .data-note-btn{border:0;background:transparent;color:#2563eb;font-size:10px;font-weight:600;text-decoration:underline;cursor:pointer}
-.site-footer{background:#102d49;color:#dbeafe;padding:18px 20px;text-align:center;font-size:12px;line-height:1.6}
+.site-footer{position:fixed;left:0;right:0;bottom:0;z-index:1400;min-height:var(--site-footer-height);background:#102d49;color:#dbeafe;padding:14px 20px;text-align:center;font-size:13px;line-height:1.6;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px}
 .site-footer a,.contact-card a,.data-modal a{color:#60a5fa;font-weight:600}
 .contact-card{background:#fff;border:1px solid #bfdbfe;border-radius:12px;padding:18px;text-align:center;color:#334155;font-size:13px;line-height:1.6}
 .contact-card a{color:#2563eb}
 .data-modal{position:fixed;inset:0;z-index:3000;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(15,23,42,.72)}
-.data-modal.on{display:flex}.data-modal-card{position:relative;width:min(720px,100%);max-height:86vh;overflow:auto;background:#fff;border-radius:15px;padding:28px;box-shadow:0 18px 50px rgba(0,0,0,.3)}
-.data-modal-card h2{font-size:18px;color:#1e3a5f;margin-bottom:12px}.data-modal-card p{font-size:13px;line-height:1.75;color:#475569;margin-bottom:13px}
+.data-modal.on{display:flex}.data-modal-card{position:relative;width:min(var(--disclaimer-width),100%);max-height:90vh;overflow:auto;background:#fff;border-radius:15px;padding:34px;box-shadow:0 18px 50px rgba(0,0,0,.3)}
+.data-modal-card h2{font-size:var(--disclaimer-title-size);color:#1e3a5f;margin-bottom:16px}.data-modal-card p{font-size:var(--disclaimer-text-size);line-height:1.75;color:#334155;margin-bottom:16px}
 .data-modal-close{position:absolute;right:13px;top:10px;border:0;background:#e2e8f0;color:#334155;border-radius:50%;width:32px;height:32px;font-size:20px;cursor:pointer}
-.data-modal-contact{border-top:1px solid #e2e8f0;padding-top:13px;margin-top:14px;font-size:13px;color:#334155}
+.data-modal-contact{border-top:1px solid #e2e8f0;padding-top:15px;margin-top:16px;font-size:15px;color:#334155}
+.data-modal-actions{display:flex;justify-content:flex-end;margin-top:18px}
+.data-modal-download{display:none;border:0;border-radius:9px;background:#2563eb;color:#fff;padding:11px 20px;font-size:15px;font-weight:700;cursor:pointer}
+.data-modal-download:hover{background:#1d4ed8}
 @media (max-width:760px){
   header{padding:7px 9px;height:auto;min-height:54px;gap:6px;flex-wrap:wrap}.hd-title span{display:none}.hd-nb,.hd-tb{padding:5px 9px;font-size:11px}
   .photos-wrap{padding:18px 12px 34px}.photos-hero{padding:20px}.photo-grid{grid-template-columns:1fr}.photo-card img{height:auto;max-height:420px}
@@ -293,8 +315,8 @@ header{background:#1a3a5c;color:#fff;padding:0 20px;display:flex;align-items:cen
             <div class="kd-loc-badge" id="kd-loc-badge">Haz clic en una tarjeta para ver sus datos</div>
           </div>
           <div class="data-actions">
-            <button class="kd-dl" id="kd-dl" onclick="downloadData()" disabled>&#11015; Descargar CSV</button>
-            <button class="data-note-btn" type="button" onclick="showDisclaimer()">Uso responsable de los datos</button>
+            <button class="kd-dl" id="kd-dl" onclick="requestDownload()" disabled>&#11015; Descargar CSV</button>
+            <button class="data-note-btn" type="button" onclick="showDisclaimer(false)">Uso responsable de los datos</button>
           </div>
         </div>
 
@@ -516,6 +538,7 @@ header{background:#1a3a5c;color:#fff;padding:0 20px;display:flex;align-items:cen
     <p>Este es un proyecto de ciencia comunitaria, con fines de educación ambiental, a cargo de científicos de ciencias atmosféricas liderando y monitoreando los datos e instrumentos. Seguimos los protocolos de datos abiertos de <a href="https://www.unesco.org/es/open-solutions/open-data" target="_blank" rel="noopener noreferrer">UNESCO</a>, dejando los datos descargables para los análisis que cualquier persona quiera hacer.</p>
     <p>Pedimos que el uso de los datos sea responsable y que se tome en cuenta el contexto de las mediciones (ubicación, fecha y hora) y el clima reciente. Por favor, si usa los datos o los gráficos de este sitio web, haga referencia al proyecto “El Aire que Respiramos: Ciencia comunitaria para enfrentar la contaminación atmosférica en la Región de Valparaíso, proyecto FNDR 8% 2025”.</p>
     <div class="data-modal-contact">Contacto para más información sobre el proyecto y colaboraciones: <a href="mailto:corporacioncaudal@gmail.com">corporacioncaudal@gmail.com</a></div>
+    <div class="data-modal-actions"><button class="data-modal-download" id="disclaimer-download" type="button" onclick="confirmDownload()">&#11015; Descargar CSV</button></div>
   </div>
 </div>
 
@@ -1321,13 +1344,26 @@ function setMode(m){
   },120);
 }
 
-function showDisclaimer(){
+var DOWNLOAD_REQUESTED=false;
+function requestDownload(){
+  showDisclaimer(true);
+}
+function showDisclaimer(forDownload){
+  DOWNLOAD_REQUESTED=!!forDownload;
+  document.getElementById('disclaimer-download').style.display=DOWNLOAD_REQUESTED?'inline-block':'none';
   document.getElementById('data-disclaimer').classList.add('on');
   document.body.style.overflow='hidden';
 }
 function hideDisclaimer(){
   document.getElementById('data-disclaimer').classList.remove('on');
   document.body.style.overflow='';
+  DOWNLOAD_REQUESTED=false;
+  document.getElementById('disclaimer-download').style.display='none';
+}
+function confirmDownload(){
+  if(!DOWNLOAD_REQUESTED)return;
+  hideDisclaimer();
+  downloadData();
 }
 function closeDisclaimerFromBackdrop(event){
   if(event.target.id==='data-disclaimer')hideDisclaimer();
