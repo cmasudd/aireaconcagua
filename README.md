@@ -37,6 +37,14 @@ minutos para mantener la vista en vivo. Solo descarga los CSV mensuales cuando
 se elige una estación o un periodo. El botón de descarga en modo Escolar
 entrega únicamente la variable seleccionada.
 
+Desde el 24 de agosto de 2026, Escuela Viña Errázuriz utiliza
+`HIRIPRO-V1` (`device_id` 224) en la visualización, lectura en vivo y exportación
+horaria. `HIRIPRO-V7` quedó retirado del manifiesto y de los datos publicados.
+
+Chart.js y Leaflet se sirven desde `assets/vendor/` para que la inicialización
+del mapa y los gráficos no dependa de la disponibilidad de un CDN externo. Las
+fotografías del proyecto se cargan de forma diferida desde `assets/photos/`.
+
 ## Exportación local
 
 El script usa por defecto las credenciales ya disponibles en
@@ -81,5 +89,6 @@ hay mediciones nuevas.
 
 ```bash
 /var/www/api_sensores/venv/bin/python -m unittest discover -s tests -v
-sed -n '406,1448p' index.html | node --check
+tr -d '\r' < index.html | \
+  awk '/^<script>$/{flag=1;next}/^<\/script>$/{flag=0}flag' | node --check
 ```

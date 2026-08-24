@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>El Aire que Respiramos &#8211; Valle de Aconcagua</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<link rel="stylesheet" href="assets/vendor/leaflet/leaflet-1.9.4.css"/>
+<script src="assets/vendor/leaflet/leaflet-1.9.4.js"></script>
+<script src="assets/vendor/chart.umd-4.4.1.js"></script>
 <style>*{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh}
 header{background:#1a3a5c;color:#fff;padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:1000;box-shadow:0 2px 8px rgba(0,0,0,.25);gap:12px}
@@ -157,6 +157,33 @@ header{background:#1a3a5c;color:#fff;padding:0 20px;display:flex;align-items:cen
 .logos-divider{width:1px;height:40px;background:#e2e8f0}
 .logos-label{font-size:10px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.6px;text-align:center;margin-bottom:10px}
 
+/* FOTOS, CONTACTO Y USO RESPONSABLE */
+.photos-wrap{max-width:1120px;margin:0 auto;padding:28px 22px 44px}
+.photos-hero{background:linear-gradient(135deg,#1a3a5c 0%,#0f766e 100%);color:#fff;border-radius:16px;padding:25px 30px;margin-bottom:22px}
+.photos-hero h1{font-size:21px;margin-bottom:6px}.photos-hero p{font-size:12px;line-height:1.65;color:#dbeafe}
+.project-banner{display:block;width:100%;max-height:150px;object-fit:contain;background:#fff;border:1px solid #dbe4ef;border-radius:12px;padding:8px;margin:16px 0 26px}
+.photo-section{margin-bottom:30px}.photo-section h2{font-size:16px;color:#1e3a5f;margin-bottom:11px;padding-bottom:7px;border-bottom:2px solid #dbe4ef}
+.photo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:13px}
+.photo-card{margin:0;background:#fff;border:1px solid #dbe4ef;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(15,23,42,.06)}
+.photo-card img{display:block;width:100%;height:230px;object-fit:contain;background:#e8eef5}
+.photo-card figcaption{padding:8px 11px;font-size:11px;color:#64748b}
+.data-actions{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0}
+.data-note-btn{border:0;background:transparent;color:#2563eb;font-size:10px;font-weight:600;text-decoration:underline;cursor:pointer}
+.site-footer{background:#102d49;color:#dbeafe;padding:18px 20px;text-align:center;font-size:12px;line-height:1.6}
+.site-footer a,.contact-card a,.data-modal a{color:#60a5fa;font-weight:600}
+.contact-card{background:#fff;border:1px solid #bfdbfe;border-radius:12px;padding:18px;text-align:center;color:#334155;font-size:13px;line-height:1.6}
+.contact-card a{color:#2563eb}
+.data-modal{position:fixed;inset:0;z-index:3000;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(15,23,42,.72)}
+.data-modal.on{display:flex}.data-modal-card{position:relative;width:min(720px,100%);max-height:86vh;overflow:auto;background:#fff;border-radius:15px;padding:28px;box-shadow:0 18px 50px rgba(0,0,0,.3)}
+.data-modal-card h2{font-size:18px;color:#1e3a5f;margin-bottom:12px}.data-modal-card p{font-size:13px;line-height:1.75;color:#475569;margin-bottom:13px}
+.data-modal-close{position:absolute;right:13px;top:10px;border:0;background:#e2e8f0;color:#334155;border-radius:50%;width:32px;height:32px;font-size:20px;cursor:pointer}
+.data-modal-contact{border-top:1px solid #e2e8f0;padding-top:13px;margin-top:14px;font-size:13px;color:#334155}
+@media (max-width:760px){
+  header{padding:7px 9px;height:auto;min-height:54px;gap:6px;flex-wrap:wrap}.hd-title span{display:none}.hd-nb,.hd-tb{padding:5px 9px;font-size:11px}
+  .photos-wrap{padding:18px 12px 34px}.photos-hero{padding:20px}.photo-grid{grid-template-columns:1fr}.photo-card img{height:auto;max-height:420px}
+  .data-modal-card{padding:24px 18px}.data-actions{align-items:stretch}
+}
+
 .custom-marker{width:32px;height:32px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:0 2px 5px rgba(0,0,0,.3)}
 .leaflet-popup-content-wrapper{border-radius:11px!important;font-family:'Segoe UI',system-ui,sans-serif!important;box-shadow:0 4px 16px rgba(0,0,0,.13)!important}
 .leaflet-popup-content{margin:10px 13px!important;font-size:12px!important}
@@ -172,6 +199,7 @@ header{background:#1a3a5c;color:#fff;padding:0 20px;display:flex;align-items:cen
   <div class="hd-nav">
     <button class="hd-nb on" id="btn-mon" onclick="setTab('mon')">Monitoreo</button>
     <button class="hd-nb" id="btn-proy" onclick="setTab('proy')">Proyecto</button>
+    <button class="hd-nb" id="btn-fotos" onclick="setTab('fotos')">Fotos</button>
   </div>
   <div style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);padding:4px 10px;border-radius:12px;flex-shrink:0">
     <div id="live-dot" style="width:8px;height:8px;border-radius:50%;background:#f97316;transition:background .5s"></div>
@@ -264,7 +292,10 @@ header{background:#1a3a5c;color:#fff;padding:0 20px;display:flex;align-items:cen
             <h2 id="kd-name">Selecciona una estacion</h2>
             <div class="kd-loc-badge" id="kd-loc-badge">Haz clic en una tarjeta para ver sus datos</div>
           </div>
-          <button class="kd-dl" id="kd-dl" onclick="downloadData()" disabled>&#11015; Descargar CSV</button>
+          <div class="data-actions">
+            <button class="kd-dl" id="kd-dl" onclick="downloadData()" disabled>&#11015; Descargar CSV</button>
+            <button class="data-note-btn" type="button" onclick="showDisclaimer()">Uso responsable de los datos</button>
+          </div>
         </div>
 
         <!-- Stats row (hidden until station selected) -->
@@ -402,6 +433,92 @@ header{background:#1a3a5c;color:#fff;padding:0 20px;display:flex;align-items:cen
   </div>
 </div>
 
+<!-- ===== FOTOS ===== -->
+<div class="tab" id="tab-fotos">
+  <main class="photos-wrap">
+    <section class="photos-hero">
+      <h1>Fotos del proyecto</h1>
+      <p>Escuelas y centros comunitarios donde instalamos los instrumentos de la Red de Monitoreo Comunitario del Valle de Aconcagua.</p>
+    </section>
+    <img class="project-banner" src="assets/photos/project-banner.jpeg" alt="Lienzo El Aire que Respiramos: Ciencia comunitaria para enfrentar la contaminación atmosférica en la Región de Valparaíso">
+
+    <section class="photo-section"><h2>Escuela Carmela Carvajal, San Felipe</h2><div class="photo-grid">
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/carmela-carvajal-01.jpeg" alt="Instalación del instrumento en la Escuela Carmela Carvajal"><figcaption>Foto: Francisco Díaz</figcaption></figure>
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/carmela-carvajal-02.jpeg" alt="Comunidad de la Escuela Carmela Carvajal"><figcaption>Foto: Francisco Díaz</figcaption></figure>
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/carmela-carvajal-03.jpeg" alt="Actividad comunitaria en la Escuela Carmela Carvajal"><figcaption>Foto: Zoë Fleming</figcaption></figure>
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/carmela-carvajal-04.jpeg" alt="Instrumento instalado en la Escuela Carmela Carvajal"><figcaption>Foto: Carolina Pavez</figcaption></figure>
+    </div></section>
+
+    <section class="photo-section"><h2>Escuela Viña Errázuriz, Panquehue</h2><div class="photo-grid">
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/vina-errazuriz-01.jpeg" alt="Instalación en la Escuela Viña Errázuriz"><figcaption>Foto: Francisco Díaz</figcaption></figure>
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/vina-errazuriz-02.jpeg" alt="Instrumento de la Escuela Viña Errázuriz"><figcaption>Foto: Carolina Pavez</figcaption></figure>
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/vina-errazuriz-03.jpeg" alt="Actividad educativa en la Escuela Viña Errázuriz"><figcaption>Foto: Francisco Díaz</figcaption></figure>
+    </div></section>
+
+    <section class="photo-section"><h2>Escuela Carolina Ocampo, San Felipe</h2><div class="photo-grid">
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/carolina-ocampo-01.jpeg" alt="Instrumento en la Escuela Carolina Ocampo"><figcaption>Foto: Carolina Pavez</figcaption></figure>
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/carolina-ocampo-02.jpeg" alt="Estación de monitoreo en Carolina Ocampo"><figcaption>Foto: Zoë Fleming</figcaption></figure>
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/carolina-ocampo-03.jpeg" alt="Actividad educativa en Carolina Ocampo"><figcaption>Foto: Zoë Fleming</figcaption></figure>
+    </div></section>
+
+    <section class="photo-section"><h2>Escuela Ema Lobos, Panquehue</h2><div class="photo-grid">
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/ema-lobos-01.jpeg" alt="Instalación en la Escuela Ema Lobos"><figcaption>Foto: Francisco Díaz</figcaption></figure>
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/ema-lobos-02.jpeg" alt="Actividad educativa en la Escuela Ema Lobos"><figcaption>Foto: Francisco Díaz</figcaption></figure>
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/ema-lobos-03.jpeg" alt="Participantes del proyecto en la Escuela Ema Lobos"><figcaption>Foto: Paula Rodríguez</figcaption></figure>
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/ema-lobos-04.jpeg" alt="Instrumentos instalados en la Escuela Ema Lobos"><figcaption>Foto: Carolina Pavez</figcaption></figure>
+    </div></section>
+
+    <section class="photo-section"><h2>Escuela Básica Las Vegas, Llay-Llay</h2><div class="photo-grid">
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/las-vegas-01.jpeg" alt="Actividad educativa en la Escuela Básica Las Vegas"><figcaption>Foto: Paula Rodríguez</figcaption></figure>
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/las-vegas-02.jpeg" alt="Instalación en Las Vegas"><figcaption>Foto: Zoë Fleming</figcaption></figure>
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/las-vegas-03.jpeg" alt="Instrumento instalado en Las Vegas"><figcaption>Foto: Zoë Fleming</figcaption></figure>
+    </div></section>
+
+    <section class="photo-section"><h2>Escuela Santa Margarita, Catemu</h2><div class="photo-grid">
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/santa-margarita-01.jpeg" alt="Instrumento en la Escuela Santa Margarita"><figcaption>Foto: Carolina Pavez</figcaption></figure>
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/santa-margarita-02.jpeg" alt="Estación de monitoreo en Santa Margarita"><figcaption>Foto: Zoë Fleming</figcaption></figure>
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/santa-margarita-03.jpeg" alt="Comunidad de la Escuela Santa Margarita"><figcaption>Foto: Paula Rodríguez</figcaption></figure>
+    </div></section>
+
+    <section class="photo-section"><h2>Colegio El Melón</h2><div class="photo-grid">
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/el-melon-01.jpeg" alt="Instrumentos en el Colegio El Melón"><figcaption>Foto: Carolina Pavez</figcaption></figure>
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/el-melon-02.jpeg" alt="Instalación en El Melón"><figcaption>Foto: Paula Rodríguez</figcaption></figure>
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/el-melon-03.jpeg" alt="Actividad educativa en El Melón"><figcaption>Foto: Macarena Troncoso</figcaption></figure>
+    </div></section>
+
+    <section class="photo-section"><h2>Escuela Agrícola de Quillota</h2><div class="photo-grid">
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/liceo-agricola-01.jpeg" alt="Instrumento en la Escuela Agrícola de Quillota"><figcaption>Foto: Zoë Fleming</figcaption></figure>
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/liceo-agricola-02.jpeg" alt="Estación de monitoreo en la Escuela Agrícola"><figcaption>Foto: Zoë Fleming</figcaption></figure>
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/liceo-agricola-03.jpeg" alt="Instrumento instalado en la Escuela Agrícola"><figcaption>Foto: Carolina Pavez</figcaption></figure>
+    </div></section>
+
+    <section class="photo-section"><h2>Estación Las Coimas, Putaendo</h2><div class="photo-grid">
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/las-coimas-01.jpeg" alt="Comunidad en la Estación Las Coimas"><figcaption>Foto: Zoë Fleming</figcaption></figure>
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/las-coimas-02.jpeg" alt="Instalación en la Estación Las Coimas"><figcaption>Foto: Zoë Fleming</figcaption></figure>
+    </div></section>
+
+    <section class="photo-section"><h2>SSR Los Aromos, Catemu</h2><div class="photo-grid">
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/ssr-los-aromos-01.jpeg" alt="Instrumentos de SSR Los Aromos"><figcaption>Foto: Carolina Pavez</figcaption></figure>
+      <figure class="photo-card"><img loading="lazy" decoding="async" src="assets/photos/ssr-los-aromos-02.jpeg" alt="Lienzo del proyecto en SSR Los Aromos"><figcaption>Foto: Zoë Fleming</figcaption></figure>
+    </div></section>
+
+    <aside class="contact-card">Contacto para más información sobre el proyecto y colaboraciones:<br><a href="mailto:corporacioncaudal@gmail.com">corporacioncaudal@gmail.com</a></aside>
+  </main>
+</div>
+
+<footer class="site-footer">Contacto para más información sobre el proyecto y colaboraciones: <a href="mailto:corporacioncaudal@gmail.com">corporacioncaudal@gmail.com</a></footer>
+
+<div class="data-modal" id="data-disclaimer" role="dialog" aria-modal="true" aria-labelledby="data-disclaimer-title" onclick="closeDisclaimerFromBackdrop(event)">
+  <div class="data-modal-card">
+    <button class="data-modal-close" type="button" aria-label="Cerrar" onclick="hideDisclaimer()">&times;</button>
+    <h2 id="data-disclaimer-title">Uso responsable de los datos</h2>
+    <p>Los datos de este proyecto son colectados con instrumentos de bajo costo, calibrados con instrumentos de referencia. Los datos son actualizados en el sitio web cada 10 minutos.</p>
+    <p>Este es un proyecto de ciencia comunitaria, con fines de educación ambiental, a cargo de científicos de ciencias atmosféricas liderando y monitoreando los datos e instrumentos. Seguimos los protocolos de datos abiertos de <a href="https://www.unesco.org/es/open-solutions/open-data" target="_blank" rel="noopener noreferrer">UNESCO</a>, dejando los datos descargables para los análisis que cualquier persona quiera hacer.</p>
+    <p>Pedimos que el uso de los datos sea responsable y que se tome en cuenta el contexto de las mediciones (ubicación, fecha y hora) y el clima reciente. Por favor, si usa los datos o los gráficos de este sitio web, haga referencia al proyecto “El Aire que Respiramos: Ciencia comunitaria para enfrentar la contaminación atmosférica en la Región de Valparaíso, proyecto FNDR 8% 2025”.</p>
+    <div class="data-modal-contact">Contacto para más información sobre el proyecto y colaboraciones: <a href="mailto:corporacioncaudal@gmail.com">corporacioncaudal@gmail.com</a></div>
+  </div>
+</div>
+
 <script>
 var STS=[
   {id:0,name:'Colegio El Melon',       proName:'Colegio El Melon (V6)',       loc:'El Melon',  type:'Escuela basica',        lat:-32.69107,lng:-71.21198,vars:['mp25','mp10','temp','hum'],        code:'HIRIPRO-V6'},
@@ -409,7 +526,7 @@ var STS=[
   {id:2,name:'Estacion Las Coimas',    proName:'Estacion Las Coimas (V12)',    loc:'Putaendo',  type:'Centro Cultural',       lat:-32.69609,lng:-70.73290,vars:['mp25','mp10','temp','hum'],       code:'HIRIPRO-V12'},
   {id:3,name:'Esc. Carolina Ocampo',   proName:'Esc. Carolina Ocampo (V4)',    loc:'San Felipe',type:'Escuela basica',        lat:-32.72095,lng:-70.77361,vars:['mp25','mp10','temp','hum'],               code:'HIRIPRO-V4'},
   {id:4,name:'Esc. Carmela Carvajal',  proName:'Esc. Carmela Carvajal (V2)',   loc:'San Felipe',    type:'Escuela basica',        lat:-32.78918,lng:-70.67814,vars:['mp25','mp10','temp','hum'],code:'HIRIPRO-V2'},
-  {id:5,name:'Esc. Vina Errazuriz',    proName:'Esc. Vina Errazuriz (V7)',     loc:'Panquehue', type:'Escuela basica',        lat:-32.79682,lng:-70.82648,vars:['mp25','mp10','temp','hum'],               code:'HIRIPRO-V7'},
+  {id:5,name:'Esc. Viña Errázuriz',    proName:'Esc. Viña Errázuriz (V1)',     loc:'Panquehue', type:'Escuela basica',        lat:-32.79682,lng:-70.82648,vars:['mp25','mp10','temp','hum'],               code:'HIRIPRO-V1'},
   {id:6,name:'Esc. Santa Margarita',   proName:'Esc. Santa Margarita (V9)',    loc:'Catemu', type:'Escuela basica',        lat:-32.77423,lng:-70.93392,vars:['mp25','mp10','so2','cov','temp','hum'],        code:'HIRIPRO-V9'},
   {id:7,name:'Esc. Basica Las Vegas',  proName:'Esc. Basica Las Vegas (V3)',   loc:'Las Vegas', type:'Escuela basica',        lat:-32.84062,lng:-70.99996,vars:['mp25','mp10','temp','hum'],       code:'HIRIPRO-V3'},
   {id:8,name:'Escuela Ema Lobos',      proName:'Escuela Ema Lobos (V11)',      loc:'Panquehue', type:'Escuela basica',        lat:-32.79173,lng:-70.87123,vars:['mp25','mp10','temp','hum'],               code:'HIRIPRO-V11'},
@@ -461,6 +578,8 @@ var VCFG={
 var PERIOD_LABELS={'24h':'Ultimas 24 horas','7d':'Ultimos 7 dias','1m':'Ultimo mes','total':'Total instalacion'};
 var FACES=['&#128513;','&#128522;','&#128528;','&#128567;','&#128680;','&#9940;'];
 var ST={v:'mp25',p:'24h',sel:-1};
+var CURRENT_TAB='mon';
+var CURRENT_MODE='pro';
 
 /* Data */
 var BASES={
@@ -634,7 +753,36 @@ function updateLegend(){
 
 /* ===== BOTTOM CHARTS ===== */
 var netChart=null,rankChart=null;
+var CHART_RENDER_TIMER=null;
+var NETWORK_CHARTS_PENDING=false;
+var PRO_DETAIL_RENDER_PENDING=false;
+var KIDS_RENDER_PENDING=false;
+
+function panelIsVisible(id){
+  var element=document.getElementById(id);
+  if(!element||element.offsetParent===null)return false;
+  var rect=element.getBoundingClientRect();
+  return rect.width>0&&rect.height>0;
+}
+
+/* Multiple station CSV files can finish almost together. Coalesce their
+   callbacks so Chart.js never destroys and recreates the same canvases in
+   overlapping promise completions. */
+function scheduleNetworkCharts(){
+  NETWORK_CHARTS_PENDING=true;
+  if(CHART_RENDER_TIMER)clearTimeout(CHART_RENDER_TIMER);
+  CHART_RENDER_TIMER=setTimeout(function(){
+    CHART_RENDER_TIMER=null;
+    requestAnimationFrame(updateBottomCharts);
+  },100);
+}
+
 function updateBottomCharts(){
+  if(typeof Chart==='undefined'||CURRENT_TAB!=='mon'||CURRENT_MODE!=='pro'||!panelIsVisible('pro-mon')){
+    NETWORK_CHARTS_PENDING=true;
+    return;
+  }
+  NETWORK_CHARTS_PENDING=false;
   var vc=VCFG[ST.v];
   var activeSts=STS.filter(function(s){return s.vars.indexOf(ST.v)>=0;});
   document.getElementById('btm-title').textContent='Red \u2013 '+vc.label+' \u00b7 '+PERIOD_LABELS[ST.p];
@@ -709,6 +857,11 @@ function updateProDetail(i){
   var nn=document.getElementById('dp-nn');
   nn.textContent=(NORMS[ST.v]&&NORMS[ST.v].length>0)?NORMS[ST.v].map(function(n){return n.lbl;}).join(' \u00b7 '):'';
   lmap.setView([s.lat,s.lng],13); mkrs[i].openPopup();
+  if(typeof Chart==='undefined'||CURRENT_TAB!=='mon'||CURRENT_MODE!=='pro'||!panelIsVisible('pro-mon')){
+    PRO_DETAIL_RENDER_PENDING=true;
+    return;
+  }
+  PRO_DETAIL_RENDER_PENDING=false;
   if(mch)mch.destroy();
   var miniDS=[{type:'bar',data:ser.values,
     backgroundColor:ser.values.map(function(v){return gc(v,ST.v).c+'44';}),
@@ -844,17 +997,23 @@ function genClockSVG(stIdx,varKey){
 
 /* ===== KIDS VISUALIZATIONS ===== */
 var kdChart=null;
-var currentViz='compare';
+var currentViz='clock';
 
 function renderViz(stIdx,varKey){
   var svgW=document.getElementById('kd-svg-wrap');
   var chW=document.getElementById('kd-chart-wrap');
   if(currentViz==='clock'){
+    KIDS_RENDER_PENDING=false;
     svgW.innerHTML=genClockSVG(stIdx,varKey);
     svgW.style.display='block'; chW.style.display='none';
     document.getElementById('viz-note').textContent=(ST.p==='24h')?'Datos de hoy \u00b7 hora por hora':'Promedio horario \u00b7 '+PERIOD_LABELS[ST.p].toLowerCase();
   } else {
     svgW.style.display='none'; chW.style.display='block';
+    if(typeof Chart==='undefined'||CURRENT_TAB!=='mon'||CURRENT_MODE!=='kids'||!panelIsVisible('kids-mon')){
+      KIDS_RENDER_PENDING=true;
+      return;
+    }
+    KIDS_RENDER_PENDING=false;
     if(kdChart){kdChart.destroy();kdChart=null;}
     if(currentViz==='trend')     drawTrendViz(stIdx,varKey);
     else if(currentViz==='daytime') drawDaytimeViz(stIdx,varKey);
@@ -1099,7 +1258,7 @@ function buildKidsScale(){
 /* ===== FULL UPDATE ===== */
 function updateAll(){
   STS.forEach(function(s,i){updateMarkerIcon(i);});
-  buildList(); updateLegend(); updateBottomCharts();
+  buildList(); updateLegend(); scheduleNetworkCharts();
   buildKidsVarBar(); buildKidsCards(); buildKidsScale();
   if(ST.sel>=0&&STS[ST.sel].vars.indexOf(ST.v)>=0) updateProDetail(ST.sel);
   else if(ST.sel>=0) document.getElementById('dp').classList.add('hidden');
@@ -1127,24 +1286,77 @@ function onKidsPerChange(){
 }
 
 function setTab(t){
+  CURRENT_TAB=t;
   document.getElementById('tab-mon').classList.toggle('on',t==='mon');
   document.getElementById('tab-proy').classList.toggle('on',t==='proy');
+  document.getElementById('tab-fotos').classList.toggle('on',t==='fotos');
   document.getElementById('btn-mon').classList.toggle('on',t==='mon');
   document.getElementById('btn-proy').classList.toggle('on',t==='proy');
-  if(t==='mon')setTimeout(function(){lmap.invalidateSize();},120);
+  document.getElementById('btn-fotos').classList.toggle('on',t==='fotos');
+  if(t==='mon')setTimeout(function(){
+    lmap.invalidateSize();
+    if(CURRENT_MODE==='pro'){
+      scheduleNetworkCharts();
+      if(ST.sel>=0)updateProDetail(ST.sel);
+    }else if(ST.sel>=0){
+      updateKidsDetail(ST.sel);
+    }
+  },120);
 }
 function setMode(m){
+  CURRENT_MODE=m;
   document.getElementById('pro-mon').style.display=(m==='pro')?'block':'none';
   document.getElementById('kids-mon').style.display=(m==='kids')?'block':'none';
   document.getElementById('btn-pro').classList.toggle('on',m==='pro');
   document.getElementById('btn-kids').classList.toggle('on',m==='kids');
-  if(m==='pro')setTimeout(function(){lmap.invalidateSize();},120);
+  if(CURRENT_TAB!=='mon')return;
+  setTimeout(function(){
+    if(m==='pro'){
+      lmap.invalidateSize();
+      scheduleNetworkCharts();
+      if(ST.sel>=0)updateProDetail(ST.sel);
+    }else if(ST.sel>=0){
+      updateKidsDetail(ST.sel);
+    }
+  },120);
 }
+
+function showDisclaimer(){
+  document.getElementById('data-disclaimer').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+function hideDisclaimer(){
+  document.getElementById('data-disclaimer').classList.remove('on');
+  document.body.style.overflow='';
+}
+function closeDisclaimerFromBackdrop(event){
+  if(event.target.id==='data-disclaimer')hideDisclaimer();
+}
+document.addEventListener('keydown',function(event){
+  if(event.key==='Escape')hideDisclaimer();
+});
+
+var RESIZE_TIMER=null;
+window.addEventListener('resize',function(){
+  if(RESIZE_TIMER)clearTimeout(RESIZE_TIMER);
+  RESIZE_TIMER=setTimeout(function(){
+    RESIZE_TIMER=null;
+    if(CURRENT_TAB!=='mon')return;
+    if(CURRENT_MODE==='pro'){
+      lmap.invalidateSize();
+      scheduleNetworkCharts();
+      if(ST.sel>=0)updateProDetail(ST.sel);
+    }else if(ST.sel>=0){
+      updateKidsDetail(ST.sel);
+    }
+  },150);
+});
 
 /* ================================================================
    DATA LAYER -- monthly CSV files served by the same GitHub Pages site.
-   The browser never calls api-sensores.cmasccp.cl.  MariaDB is exported
-   locally once per hour by scripts/export_monthly_csv.py.
+   Historical ranges never call the sensor API: MariaDB is exported locally
+   once per hour by scripts/export_monthly_csv.py. Only the latest reading
+   uses one limite=1 request per station every 10 minutes.
    ================================================================ */
 
 var DATA_CACHE = {};       /* "stIdx_var_period" -> chart series */
@@ -1392,7 +1604,7 @@ function fetchHistory(stIdx, period) {
       cacheRows(stIdx,period,rows,true);
       LOADING[lockKey]=false;
       updateMarkerIcon(stIdx);
-      if(ST.p===period){buildList();updateBottomCharts();}
+      if(ST.p===period){buildList();scheduleNetworkCharts();}
       if(ST.sel===stIdx&&ST.p===period){updateProDetail(stIdx);updateKidsDetail(stIdx);}
   }).catch(function(error){
       LOADING[lockKey]=false;

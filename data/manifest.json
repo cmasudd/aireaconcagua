@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-24T12:06:09-04:00",
+  "updated_at": "2026-08-24T12:59:14-04:00",
   "timezone": "America/Santiago",
   "max_csv_bytes": 41943040,
   "stations": [
@@ -117,25 +117,25 @@
       }
     },
     {
-      "device_id": 234,
-      "code": "HIRIPRO-V7",
-      "name": "Esc. Vina Errazuriz",
+      "device_id": 224,
+      "code": "HIRIPRO-V1",
+      "name": "Esc. Viña Errázuriz",
       "location": "Panquehue",
       "months": {
         "2026-04": [
-          "data/HIRIPRO-V7/2026-04-part-001.csv"
+          "data/HIRIPRO-V1/2026-04-part-001.csv"
         ],
         "2026-05": [
-          "data/HIRIPRO-V7/2026-05-part-001.csv"
+          "data/HIRIPRO-V1/2026-05-part-001.csv"
         ],
         "2026-06": [
-          "data/HIRIPRO-V7/2026-06-part-001.csv"
+          "data/HIRIPRO-V1/2026-06-part-001.csv"
         ],
         "2026-07": [
-          "data/HIRIPRO-V7/2026-07-part-001.csv"
+          "data/HIRIPRO-V1/2026-07-part-001.csv"
         ],
         "2026-08": [
-          "data/HIRIPRO-V7/2026-08-part-001.csv"
+          "data/HIRIPRO-V1/2026-08-part-001.csv"
         ]
       }
     },
