@@ -2,3 +2,29 @@ __pycache__/
 *.py[cod]
 .venv/
 data/**/*.tmp
+
+# Documentos fuente de trabajo (el sitio publica sus recursos desde assets/)
+*.docx
+*.odt
+*.xlsx
+*.pptx
+.~lock.*#
+
+# Logs locales del daemon y archivos temporales
+*.log
+*.tmp
+*.bak
+*.orig
+*~
+chart-smoke.html
+
+# Configuración local y credenciales
+.env
+.env.*
+!.env.example
+
+# Visual Studio Code y archivos del sistema operativo
+.vscode/
+*.code-workspace
+.DS_Store
+Thumbs.db
