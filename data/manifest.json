@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-31T23:06:27-03:00",
+  "updated_at": "2026-11-01T00:06:26-03:00",
   "timezone": "America/Santiago",
   "max_csv_bytes": 41943040,
   "stations": [
@@ -30,6 +30,9 @@
         ],
         "2026-10": [
           "data/HIRIPRO-V6/2026-10-part-001.csv"
+        ],
+        "2026-11": [
+          "data/HIRIPRO-V6/2026-11-part-001.csv"
         ]
       }
     },
@@ -59,6 +62,9 @@
         ],
         "2026-10": [
           "data/HIRIPRO-V10/2026-10-part-001.csv"
+        ],
+        "2026-11": [
+          "data/HIRIPRO-V10/2026-11-part-001.csv"
         ]
       }
     },
@@ -85,6 +91,9 @@
         ],
         "2026-10": [
           "data/HIRIPRO-V12/2026-10-part-001.csv"
+        ],
+        "2026-11": [
+          "data/HIRIPRO-V12/2026-11-part-001.csv"
         ]
       }
     },
@@ -114,6 +123,9 @@
         ],
         "2026-10": [
           "data/HIRIPRO-V4/2026-10-part-001.csv"
+        ],
+        "2026-11": [
+          "data/HIRIPRO-V4/2026-11-part-001.csv"
         ]
       }
     },
@@ -143,6 +155,9 @@
         ],
         "2026-10": [
           "data/HIRIPRO-V2/2026-10-part-001.csv"
+        ],
+        "2026-11": [
+          "data/HIRIPRO-V2/2026-11-part-001.csv"
         ]
       }
     },
@@ -172,6 +187,9 @@
         ],
         "2026-10": [
           "data/HIRIPRO-V1/2026-10-part-001.csv"
+        ],
+        "2026-11": [
+          "data/HIRIPRO-V1/2026-11-part-001.csv"
         ]
       }
     },
@@ -201,6 +219,9 @@
         ],
         "2026-10": [
           "data/HIRIPRO-V9/2026-10-part-001.csv"
+        ],
+        "2026-11": [
+          "data/HIRIPRO-V9/2026-11-part-001.csv"
         ]
       }
     },
@@ -230,6 +251,9 @@
         ],
         "2026-10": [
           "data/HIRIPRO-V3/2026-10-part-001.csv"
+        ],
+        "2026-11": [
+          "data/HIRIPRO-V3/2026-11-part-001.csv"
         ]
       }
     },
@@ -256,6 +280,9 @@
         ],
         "2026-10": [
           "data/HIRIPRO-V11/2026-10-part-001.csv"
+        ],
+        "2026-11": [
+          "data/HIRIPRO-V11/2026-11-part-001.csv"
         ]
       }
     },
@@ -285,6 +312,9 @@
         ],
         "2026-10": [
           "data/HIRIPRO-V8/2026-10-part-001.csv"
+        ],
+        "2026-11": [
+          "data/HIRIPRO-V8/2026-11-part-001.csv"
         ]
       }
     }
